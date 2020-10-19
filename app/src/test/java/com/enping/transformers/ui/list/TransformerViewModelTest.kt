@@ -59,20 +59,24 @@ internal class TransformerViewModelTest : KoinTest {
         vm.transformer.observeForever(transformerObserver)
 
         vm.load(false, "")
-        vm.edit(expected.copy(name = "new"))
-        vm.save()
-
         coVerifyOrder {
             editObserver.onChanged(capture(editSlot))
             transformerObserver.onChanged(capture(transformerSlot))
+        }
+        Truth.assertThat(editSlot.captured).isEqualTo(false)
+        Truth.assertThat(transformerSlot[0]).isEqualTo(expected)
+
+        vm.edit(expected.copy(name = "new"))
+        coVerifyOrder {
             transformerObserver.onChanged(capture(transformerSlot))
+        }
+        Truth.assertThat(transformerSlot[1]).isEqualTo(expected.copy(name = "new"))
+
+        vm.save()
+        coVerifyOrder {
             repo.createTransformer(capture(transformerSlot))
         }
-
-        Truth.assertThat(editSlot.captured).isEqualTo(false)
-        Truth.assertThat(transformerSlot[2]).isEqualTo(expected)
-        Truth.assertThat(transformerSlot[1]).isEqualTo(expected.copy(name = "new"))
-        Truth.assertThat(transformerSlot[0]).isEqualTo(expected.copy(name = "new"))
+        Truth.assertThat(transformerSlot[2]).isEqualTo(expected.copy(name = "new"))
 
         confirmVerified(editObserver, transformerObserver, repo)
 
@@ -92,21 +96,25 @@ internal class TransformerViewModelTest : KoinTest {
         vm.transformer.observeForever(transformerObserver)
 
         vm.load(true, expected.id)
-        vm.edit(expected.copy(name = "new"))
-        vm.save()
-
         coVerifyOrder {
             editObserver.onChanged(capture(editSlot))
             repo.getTransformer(expected.id)
             transformerObserver.onChanged(capture(transformerSlot))
+        }
+        Truth.assertThat(editSlot.captured).isEqualTo(true)
+        Truth.assertThat(transformerSlot[0]).isEqualTo(expected)
+
+        vm.edit(expected.copy(name = "new"))
+        coVerifyOrder {
             transformerObserver.onChanged(capture(transformerSlot))
+        }
+        Truth.assertThat(transformerSlot[1]).isEqualTo(expected.copy(name = "new"))
+
+        vm.save()
+        coVerifyOrder {
             repo.updateTransformer(capture(transformerSlot))
         }
-
-        Truth.assertThat(editSlot.captured).isEqualTo(true)
-        Truth.assertThat(transformerSlot[2]).isEqualTo(expected)
-        Truth.assertThat(transformerSlot[1]).isEqualTo(expected.copy(name = "new"))
-        Truth.assertThat(transformerSlot[0]).isEqualTo(expected.copy(name = "new"))
+        Truth.assertThat(transformerSlot[2]).isEqualTo(expected.copy(name = "new"))
 
         confirmVerified(editObserver, transformerObserver, repo)
     }
