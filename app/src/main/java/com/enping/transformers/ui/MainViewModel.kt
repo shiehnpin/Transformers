@@ -21,4 +21,11 @@ class MainViewModel(private val repo: TransformerRepo) : ViewModel() {
             _transformers.value = repo.getTransformers()
         }
     }
+
+    fun delete(transformerId: String){
+        viewModelScope.launch {
+            repo.deleteTransformer(transformerId)
+            _transformers.value = repo.getTransformers()
+        }
+    }
 }

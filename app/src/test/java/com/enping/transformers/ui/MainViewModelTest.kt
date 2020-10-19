@@ -3,7 +3,6 @@ package com.enping.transformers.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.enping.transformers.data.TransformerRepo
-import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
 import com.google.common.truth.Truth
 import io.mockk.*
@@ -49,7 +48,7 @@ internal class MainViewModelTest : KoinTest {
     }
 
     @Test
-    fun `given first time use when open main then load transformers`() {
+    fun `given first time use when open app then load transformers`() {
         val repo: TransformerRepo = get()
         val vm = MainViewModel(repo)
         val expected = Transformer.create(name = "A")
@@ -66,5 +65,50 @@ internal class MainViewModelTest : KoinTest {
         }
         confirmVerified(repo)
         Truth.assertThat(slot.captured).isEqualTo(listOf(expected))
+    }
+
+    @Test
+    fun `given has transformers when delete the transform then reload transformers`() {
+        val repo: TransformerRepo = get()
+        val vm = MainViewModel(repo)
+        val mockObserver = mockk<Observer<List<Transformer>>>(relaxUnitFun = true)
+        val slot = slot<List<Transformer>>()
+
+        coEvery {
+            repo.getTransformers()
+        } answers {
+            listOf(
+                Transformer.create(id = "A"),
+                Transformer.create(id = "B")
+            )
+        } andThen {
+            listOf(
+                Transformer.create(id = "B")
+            )
+        }
+        vm.transformers.observeForever(mockObserver)
+
+        vm.load()
+        coVerifyOrder {
+            repo.getOrCreateAllSpark()
+            repo.getTransformers()
+            mockObserver.onChanged(capture(slot))
+        }
+        Truth.assertThat(slot.captured).isEqualTo(listOf(
+            Transformer.create(id = "A"),
+            Transformer.create(id = "B")
+        ))
+
+        vm.delete("A")
+        coVerifyOrder {
+            repo.deleteTransformer("A")
+            repo.getTransformers()
+            mockObserver.onChanged(capture(slot))
+        }
+        Truth.assertThat(slot.captured).isEqualTo(listOf(
+            Transformer.create(id = "B")
+        ))
+
+        confirmVerified(repo)
     }
 }
