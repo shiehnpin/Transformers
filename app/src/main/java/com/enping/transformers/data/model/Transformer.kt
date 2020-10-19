@@ -45,14 +45,14 @@ data class Transformer(
 
         fun create(
             name: String,
-            strength: Int,
-            intelligence: Int,
-            speed: Int,
-            endurance: Int,
-            rank: Int,
-            courage: Int,
-            firepower: Int,
-            skill: Int,
+            strength: Int = MIN_RANK,
+            intelligence: Int = MIN_RANK,
+            speed: Int = MIN_RANK,
+            endurance: Int = MIN_RANK,
+            rank: Int = MIN_RANK,
+            courage: Int = MIN_RANK,
+            firepower: Int = MIN_RANK,
+            skill: Int = MIN_RANK,
             team: Team
         ): Transformer {
 

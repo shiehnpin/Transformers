@@ -1,12 +1,11 @@
 package com.enping.transformers.data
 
+import com.enping.transformers.data.model.Team
+import com.enping.transformers.data.model.Transformer
 import com.enping.transformers.data.source.local.LocalDataSource
 import com.enping.transformers.data.source.remote.RemoteDataSource
 import com.google.common.truth.Truth
-import io.mockk.coEvery
-import io.mockk.coVerifyOrder
-import io.mockk.confirmVerified
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
@@ -21,7 +20,7 @@ internal class TransformerRepoImplTest : KoinTest {
     @get:Rule
     val koinTestRule = KoinTestRule.create {
         modules(module {
-            single { mockk<RemoteDataSource>() }
+            single { mockk<RemoteDataSource>(relaxed = true) }
             single { mockk<LocalDataSource>(relaxed = true) }
         })
     }
@@ -80,5 +79,145 @@ internal class TransformerRepoImplTest : KoinTest {
 
         }
 
+    @Test
+    fun `given AllSpark exist when create new transformer then call API and persist locally`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            val slot = slot<Transformer>()
+            coEvery { local.getAllSpark() } returns key
+            coEvery {
+                remote.createTransformer(key, capture(slot))
+            } answers {
+                //Issued by server
+                slot.captured.copy(id = "id", teamIcon = "icon")
+            }
 
+            val expected = Transformer.create(
+                name = "Bot",
+                team = Team.Autobots
+            )
+            val expectedFromServer = expected.copy(
+                id = "id",
+                teamIcon = "icon"
+            )
+            val repo = TransformerRepoImpl(remote, local)
+            repo.createTransformer(expected)
+
+            coVerifyOrder {
+                local.getAllSpark()
+                remote.createTransformer(key, expected)
+                local.insertTransformer(expectedFromServer)
+            }
+            confirmVerified(local, remote)
+        }
+
+    @Test
+    fun `given AllSpark exist but data is not load when get transformers then get from API`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            val expected = listOf(
+                Transformer.create(
+                    name = "Bot1",
+                    team = Team.Autobots
+                )
+            )
+            coEvery { local.getAllSpark() } returns key
+            coEvery { local.isLoaded() } returns false
+            coEvery { local.getTransformers() } returns expected
+            coEvery { remote.getTransformers(key) } returns expected
+
+            val repo = TransformerRepoImpl(remote, local)
+            val actual = repo.getTransformers()
+
+            coVerifyOrder {
+                local.getAllSpark()
+                local.isLoaded()
+                remote.getTransformers(key)
+                local.insertTransformers(expected)
+                local.getTransformers()
+            }
+            confirmVerified(local, remote)
+            Truth.assertThat(actual).isEqualTo(expected)
+        }
+
+    @Test
+    fun `given AllSpark exist but data load when get transformers then get from local`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            val expected = listOf(
+                Transformer.create(
+                    name = "Bot1",
+                    team = Team.Autobots
+                )
+            )
+            coEvery { local.getAllSpark() } returns key
+            coEvery { local.isLoaded() } returns true
+            coEvery { local.getTransformers() } returns expected
+
+            val repo = TransformerRepoImpl(remote, local)
+            val actual = repo.getTransformers()
+
+            coVerifyOrder {
+                local.getAllSpark()
+                local.isLoaded()
+                local.getTransformers()
+            }
+            confirmVerified(local, remote)
+            Truth.assertThat(actual).isEqualTo(expected)
+        }
+
+
+    @Test
+    fun `given AllSpark exist when update transformer then call API and persist locally`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            val slot = slot<Transformer>()
+            coEvery { local.getAllSpark() } returns key
+            coEvery {
+                remote.updateTransformer(key, capture(slot))
+            } answers {
+                slot.captured
+            }
+
+            val expected = Transformer.create(
+                name = "Bot",
+                team = Team.Autobots
+            )
+            val repo = TransformerRepoImpl(remote, local)
+            repo.updateTransformer(expected)
+
+            coVerifyOrder {
+                local.getAllSpark()
+                remote.updateTransformer(key, expected)
+                local.updateTransformer(expected)
+            }
+            confirmVerified(local, remote)
+        }
+
+    @Test
+    fun `given AllSpark exist when delete transformer then call API and removed locally`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            coEvery { local.getAllSpark() } returns key
+
+            val repo = TransformerRepoImpl(remote, local)
+            repo.deleteTransformer("id")
+
+            coVerifyOrder {
+                local.getAllSpark()
+                remote.deleteTransformer(key, "id")
+                local.deleteTransformer("id")
+            }
+            confirmVerified(local, remote)
+        }
 }
