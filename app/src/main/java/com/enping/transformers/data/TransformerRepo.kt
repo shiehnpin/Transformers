@@ -28,28 +28,32 @@ class TransformerRepoImpl(
     override suspend fun getOrCreateAllSpark(): String {
         val allSpark = local.getAllSpark()
         if (allSpark != null) {
+            remote.setAllSpark(allSpark)
             return allSpark
         }
 
         val newAllSpark = remote.createAllSpark()
         local.setAllSpark(newAllSpark)
+        remote.setAllSpark(newAllSpark)
 
         return newAllSpark
     }
 
     override suspend fun releaseAllSpark() {
         local.clearAllSpark()
+        remote.clearAllSpark()
     }
 
     override suspend fun getTransformers(): List<Transformer> {
         val allSpark = local.getAllSpark()
         checkNotNull(allSpark)
+        remote.setAllSpark(allSpark)
 
         if(local.isLoaded()){
             return local.getTransformers()
         }
 
-        val transformers = remote.getTransformers(allSpark)
+        val transformers = remote.getTransformers()
         local.insertTransformers(transformers)
 
         return local.getTransformers()
@@ -58,8 +62,9 @@ class TransformerRepoImpl(
     override suspend fun createTransformer(transformer: Transformer): Transformer {
         val allSpark = local.getAllSpark()
         checkNotNull(allSpark)
+        remote.setAllSpark(allSpark)
 
-        val createdTransformer = remote.createTransformer(allSpark, transformer)
+        val createdTransformer = remote.createTransformer(transformer)
         local.insertTransformer(createdTransformer)
         return createdTransformer
     }
@@ -67,8 +72,9 @@ class TransformerRepoImpl(
     override suspend fun updateTransformer(transformer: Transformer): Transformer {
         val allSpark = local.getAllSpark()
         checkNotNull(allSpark)
+        remote.setAllSpark(allSpark)
 
-        val updatedTransformer = remote.updateTransformer(allSpark, transformer)
+        val updatedTransformer = remote.updateTransformer(transformer)
         local.updateTransformer(updatedTransformer)
         return updatedTransformer
     }
@@ -76,8 +82,9 @@ class TransformerRepoImpl(
     override suspend fun deleteTransformer(transformerId: String) {
         val allSpark = local.getAllSpark()
         checkNotNull(allSpark)
+        remote.setAllSpark(allSpark)
 
-        remote.deleteTransformer(allSpark, transformerId)
+        remote.deleteTransformer(transformerId)
         local.deleteTransformer(transformerId)
     }
 

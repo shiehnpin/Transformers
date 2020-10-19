@@ -41,6 +41,7 @@ internal class TransformerRepoImplTest : KoinTest {
                 local.getAllSpark()
                 remote.createAllSpark()
                 local.setAllSpark(expected)
+                remote.setAllSpark(expected)
             }
             confirmVerified(local, remote)
             Truth.assertThat(actual).isEqualTo(expected)
@@ -59,6 +60,7 @@ internal class TransformerRepoImplTest : KoinTest {
 
             coVerifyOrder {
                 local.getAllSpark()
+                remote.setAllSpark(expected)
             }
             confirmVerified(local, remote)
             Truth.assertThat(actual).isEqualTo(expected)
@@ -75,8 +77,8 @@ internal class TransformerRepoImplTest : KoinTest {
 
             coVerifyOrder {
                 local.clearAllSpark()
+                remote.clearAllSpark()
             }
-
         }
 
     @Test
@@ -88,7 +90,7 @@ internal class TransformerRepoImplTest : KoinTest {
             val slot = slot<Transformer>()
             coEvery { local.getAllSpark() } returns key
             coEvery {
-                remote.createTransformer(key, capture(slot))
+                remote.createTransformer(capture(slot))
             } answers {
                 //Issued by server
                 slot.captured.copy(id = "id", teamIcon = "icon")
@@ -107,7 +109,8 @@ internal class TransformerRepoImplTest : KoinTest {
 
             coVerifyOrder {
                 local.getAllSpark()
-                remote.createTransformer(key, expected)
+                remote.setAllSpark(key)
+                remote.createTransformer(expected)
                 local.insertTransformer(expectedFromServer)
             }
             confirmVerified(local, remote)
@@ -128,15 +131,16 @@ internal class TransformerRepoImplTest : KoinTest {
             coEvery { local.getAllSpark() } returns key
             coEvery { local.isLoaded() } returns false
             coEvery { local.getTransformers() } returns expected
-            coEvery { remote.getTransformers(key) } returns expected
+            coEvery { remote.getTransformers() } returns expected
 
             val repo = TransformerRepoImpl(remote, local)
             val actual = repo.getTransformers()
 
             coVerifyOrder {
                 local.getAllSpark()
+                remote.setAllSpark(key)
                 local.isLoaded()
-                remote.getTransformers(key)
+                remote.getTransformers()
                 local.insertTransformers(expected)
                 local.getTransformers()
             }
@@ -165,6 +169,7 @@ internal class TransformerRepoImplTest : KoinTest {
 
             coVerifyOrder {
                 local.getAllSpark()
+                remote.setAllSpark(key)
                 local.isLoaded()
                 local.getTransformers()
             }
@@ -182,7 +187,7 @@ internal class TransformerRepoImplTest : KoinTest {
             val slot = slot<Transformer>()
             coEvery { local.getAllSpark() } returns key
             coEvery {
-                remote.updateTransformer(key, capture(slot))
+                remote.updateTransformer(capture(slot))
             } answers {
                 slot.captured
             }
@@ -196,7 +201,8 @@ internal class TransformerRepoImplTest : KoinTest {
 
             coVerifyOrder {
                 local.getAllSpark()
-                remote.updateTransformer(key, expected)
+                remote.setAllSpark(key)
+                remote.updateTransformer(expected)
                 local.updateTransformer(expected)
             }
             confirmVerified(local, remote)
@@ -215,7 +221,8 @@ internal class TransformerRepoImplTest : KoinTest {
 
             coVerifyOrder {
                 local.getAllSpark()
-                remote.deleteTransformer(key, "id")
+                remote.setAllSpark(key)
+                remote.deleteTransformer( "id")
                 local.deleteTransformer("id")
             }
             confirmVerified(local, remote)
