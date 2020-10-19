@@ -17,11 +17,6 @@ interface LocalDataSource {
 
 class LocalDataSourceImpl(private val db: TransformerDatabase) : LocalDataSource {
 
-//    val db = Room.databaseBuilder(
-//        application,
-//        TransformerDatabase::class.java, "transformer-db"
-//    ).build()
-
     override suspend fun getAllSpark(): String? {
         return getDao().getAllSpark()?.allSpark
     }
