@@ -55,7 +55,7 @@ internal class RemoteDataSourceImplTest : KoinTest {
     @Test
     fun `give has AllSpark when request all transformer then get it from server`() {
         val allSpark = "token"
-        val transformer = Transformer.create(name = "A", team = Team.Decepticons)
+        val transformer = Transformer.create(id = "1")
         val mockResponse = MockResponse().apply {
             setBody(gson.toJson(listOf(transformer)))
             setHeader("Content-Type", "application/json")
@@ -75,9 +75,9 @@ internal class RemoteDataSourceImplTest : KoinTest {
     @Test
     fun `give has AllSpark when create transformer then post it to server`() {
         val allSpark = "token"
-        val transformer = Transformer.create(name = "A", team = Team.Decepticons)
+        val transformer = Transformer.create(id = "id")
         val mockResponse = MockResponse().apply {
-            setBody(gson.toJson(transformer.copy(id = "id", teamIcon = "icon_url")))
+            setBody(gson.toJson(transformer))
             setHeader("Content-Type", "application/json")
         }
         get<MockWebServer>().enqueue(mockResponse)
@@ -89,7 +89,7 @@ internal class RemoteDataSourceImplTest : KoinTest {
         val request = get<MockWebServer>().takeRequest()
         Truth.assertThat(request.path).isEqualTo("/transformers")
         Truth.assertThat(request.headers["Authorization"]).isEqualTo("Bearer $allSpark")
-        Truth.assertThat(response).isEqualTo(transformer.copy(id = "id", teamIcon = "icon_url"))
+        Truth.assertThat(response).isEqualTo(transformer)
     }
 
     @Test

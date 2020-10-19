@@ -52,7 +52,7 @@ internal class MainViewModelTest : KoinTest {
     fun `given first time use when open main then load transformers`() {
         val repo: TransformerRepo = get()
         val vm = MainViewModel(repo)
-        val expected = Transformer.create(name = "A", team = Team.Decepticons)
+        val expected = Transformer.create(name = "A")
         val mockObserver = mockk<Observer<List<Transformer>>>(relaxUnitFun = true)
         val slot = slot<List<Transformer>>()
         coEvery { repo.getTransformers() } answers { listOf(expected) }

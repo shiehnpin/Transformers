@@ -10,10 +10,13 @@ interface TransformerDao{
     @Query("SELECT * FROM transformer")
     suspend fun getTransformers(): List<Transformer>
 
+    @Query("SELECT * FROM transformer WHERE id = :id LIMIT 1")
+    fun getTransformer(id: String): Transformer
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateTransformer(transformer: Transformer)
 
-    @Query("DELETE FROM transformer WHERE id == :id")
+    @Query("DELETE FROM transformer WHERE id = :id")
     suspend fun deleteTransformer(id: String)
 
     @Query("SELECT * FROM allspark LIMIT 1")

@@ -73,7 +73,7 @@ data class Transformer(
         const val MIN_RANK = 1
 
         fun create(
-            name: String,
+            name: String = "",
             strength: Int = MIN_RANK,
             intelligence: Int = MIN_RANK,
             speed: Int = MIN_RANK,
@@ -82,7 +82,8 @@ data class Transformer(
             courage: Int = MIN_RANK,
             firepower: Int = MIN_RANK,
             skill: Int = MIN_RANK,
-            team: Team
+            team: Team = Team.Autobots,
+            id: String = ""
         ): Transformer {
 
             listOf(
@@ -101,7 +102,7 @@ data class Transformer(
             }
 
             return Transformer(
-                "", name,
+                id, name,
                 strength, intelligence, speed, endurance,
                 rank, courage, firepower, skill, team.key
             )
