@@ -6,8 +6,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-val baseUrl = "https://transformers-api.firebaseapp.com/"
-
 interface RemoteDataSource {
     suspend fun createAllSpark(): String
     suspend fun createTransformer(transformer: Transformer): Transformer
@@ -26,7 +24,7 @@ class RemoteDataSourceImpl(baseUrl: HttpUrl) : RemoteDataSource {
         val request: Request = chain.request()
         val ongoing = request.newBuilder()
         ongoing.addHeader("Accept", "application/json")
-        if (request.url.encodedPath.startsWith("/transformers")) {
+        if (request.url().encodedPath().startsWith("/transformers")) {
             checkNotNull(allSpark)
             ongoing.addHeader("Authorization", "Bearer $allSpark")
         }
@@ -34,8 +32,10 @@ class RemoteDataSourceImpl(baseUrl: HttpUrl) : RemoteDataSource {
     }
 
     init {
+        val socketFactory = TLSSocketFactory()
 
         val client = OkHttpClient.Builder()
+            .sslSocketFactory(socketFactory, socketFactory.trustManager)
             .addInterceptor(requestInterceptor)
             .readTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
