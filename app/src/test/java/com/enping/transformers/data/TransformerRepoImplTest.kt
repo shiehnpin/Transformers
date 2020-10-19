@@ -132,6 +132,33 @@ internal class TransformerRepoImplTest : KoinTest {
             Truth.assertThat(actual).isEqualTo(expected)
         }
 
+    @Test
+    fun `given AllSpark exist when get transformer with id then get from local`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            val id = "1"
+            val expected = Transformer(
+                id = id,
+                name = "Bot1",
+                team = "A"
+            )
+            coEvery { local.getAllSpark() } returns key
+            coEvery { local.hasAllSpark() } returns true
+            coEvery { local.getTransformer(id) } returns expected
+
+            val repo = TransformerRepoImpl(remote, local)
+            val actual = repo.getTransformer(id)
+
+            coVerifyOrder {
+                local.hasAllSpark()
+                local.getTransformer(id)
+            }
+            confirmVerified(local, remote)
+            Truth.assertThat(actual).isEqualTo(expected)
+        }
+
 
     @Test
     fun `given AllSpark exist when update transformer then call API and persist locally`() =
@@ -183,7 +210,7 @@ internal class TransformerRepoImplTest : KoinTest {
                 local.getAllSpark()
                 remote.setAllSpark(key)
                 local.hasAllSpark()
-                remote.deleteTransformer( "id")
+                remote.deleteTransformer("id")
                 local.deleteTransformer("id")
             }
             confirmVerified(local, remote)

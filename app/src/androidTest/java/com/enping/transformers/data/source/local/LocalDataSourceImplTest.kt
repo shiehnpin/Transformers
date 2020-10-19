@@ -7,6 +7,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.enping.transformers.data.model.Transformer
 import com.google.common.truth.Truth
 import kotlinx.coroutines.runBlocking
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,21 +16,20 @@ import org.koin.core.get
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
+import org.koin.test.mock.declare
 import java.util.concurrent.Executors
 
 @RunWith(AndroidJUnit4::class)
 internal class LocalDataSourceImplTest : KoinTest {
-
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        modules(module {
-            single<TransformerDatabase> {
-                val context = ApplicationProvider.getApplicationContext<Context>()
-                Room.inMemoryDatabaseBuilder(context, TransformerDatabase::class.java)
-                    .setTransactionExecutor(Executors.newSingleThreadExecutor())
-                    .build()
-            }
-        })
+    
+    @Before
+    fun createDatabase(){
+        declare {
+            val context = ApplicationProvider.getApplicationContext<Context>()
+            Room.inMemoryDatabaseBuilder(context, TransformerDatabase::class.java)
+                .setTransactionExecutor(Executors.newSingleThreadExecutor())
+                .build()
+        }
     }
 
     @Test
@@ -101,6 +102,7 @@ internal class LocalDataSourceImplTest : KoinTest {
             local.insertTransformer(previous)
             local.updateTransformer(expected)
             Truth.assertThat(local.getTransformers()).containsExactly(expected)
+            Truth.assertThat(local.getTransformer(expected.id)).isEqualTo(expected)
         }
     }
 

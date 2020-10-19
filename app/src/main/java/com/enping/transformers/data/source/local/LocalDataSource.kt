@@ -12,6 +12,7 @@ interface LocalDataSource {
     suspend fun updateTransformer(transformer: Transformer)
     suspend fun deleteTransformer(transformerId: String)
     suspend fun getTransformers(): List<Transformer>
+    suspend fun getTransformer(transformerId: String): Transformer
 }
 
 
@@ -47,6 +48,10 @@ class LocalDataSourceImpl(private val db: TransformerDatabase) : LocalDataSource
 
     override suspend fun getTransformers(): List<Transformer> {
         return getDao().getTransformers()
+    }
+
+    override suspend fun getTransformer(transformerId: String): Transformer {
+        return getDao().getTransformer(transformerId)
     }
 
     private fun getDao(): TransformerDao = db.transformerDao()

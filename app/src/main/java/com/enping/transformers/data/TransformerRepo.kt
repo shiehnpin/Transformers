@@ -13,6 +13,8 @@ interface TransformerRepo {
 
     suspend fun getTransformers(): List<Transformer>
 
+    suspend fun getTransformer(transformerId: String): Transformer
+
     suspend fun createTransformer(transformer: Transformer): Transformer
 
     suspend fun updateTransformer(transformer: Transformer): Transformer
@@ -44,6 +46,12 @@ class TransformerRepoImpl(
         check(local.hasAllSpark())
 
         return local.getTransformers()
+    }
+
+    override suspend fun getTransformer(transformerId: String): Transformer {
+        check(local.hasAllSpark())
+
+        return local.getTransformer(transformerId)
     }
 
     override suspend fun createTransformer(transformer: Transformer): Transformer {
