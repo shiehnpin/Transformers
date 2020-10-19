@@ -88,7 +88,7 @@ internal class TransformerViewModelTest : KoinTest {
         val vm = TransformerViewModel(repo)
         val expected = Transformer.create(id = "1")
         val transformerObserver = mockk<Observer<Transformer>>(relaxUnitFun = true)
-        val transformerSlot = mutableListOf<Transformer>()
+        val transformerSlot = slot<Transformer>()
         val editObserver = mockk<Observer<Boolean>>(relaxUnitFun = true)
         val editSlot = slot<Boolean>()
         coEvery { repo.getTransformer(expected.id) } answers { expected }
@@ -102,19 +102,19 @@ internal class TransformerViewModelTest : KoinTest {
             transformerObserver.onChanged(capture(transformerSlot))
         }
         Truth.assertThat(editSlot.captured).isEqualTo(true)
-        Truth.assertThat(transformerSlot[0]).isEqualTo(expected)
+        Truth.assertThat(transformerSlot.captured).isEqualTo(expected)
 
         vm.edit(expected.copy(name = "new"))
         coVerifyOrder {
             transformerObserver.onChanged(capture(transformerSlot))
         }
-        Truth.assertThat(transformerSlot[1]).isEqualTo(expected.copy(name = "new"))
+        Truth.assertThat(transformerSlot.captured).isEqualTo(expected.copy(name = "new"))
 
         vm.save()
         coVerifyOrder {
             repo.updateTransformer(capture(transformerSlot))
         }
-        Truth.assertThat(transformerSlot[2]).isEqualTo(expected.copy(name = "new"))
+        Truth.assertThat(transformerSlot.captured).isEqualTo(expected.copy(name = "new"))
 
         confirmVerified(editObserver, transformerObserver, repo)
     }
