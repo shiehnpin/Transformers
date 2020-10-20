@@ -1,4 +1,4 @@
-package com.enping.transformers
+package com.enping.transformers.ui.list
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
+import com.enping.transformers.R
 import kotlinx.android.synthetic.main.layout_rating_seekbar.view.*
 
 class RatingSeekBar @JvmOverloads constructor(
@@ -26,10 +27,11 @@ class RatingSeekBar @JvmOverloads constructor(
     init {
         val attributes = attrs?.let {
             context.theme.obtainStyledAttributes(
-                attrs, R.styleable.RatingSeekBar, defStyleAttr, 0
+                attrs,
+                R.styleable.RatingView, defStyleAttr, 0
             )
         }
-        ratingName = attributes?.getString(R.styleable.RatingSeekBar_ratingName) ?: "unknown"
+        ratingName = attributes?.getString(R.styleable.RatingView_ratingName) ?: "unknown"
         attributes?.recycle()
 
         tvTitle = root.tv_rating_name_rating_seekbar

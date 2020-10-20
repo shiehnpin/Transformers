@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="RatingSeekBar">
+    <declare-styleable name="RatingView">
         <attr name="ratingName" format="string"/>
     </declare-styleable>
 </resources>

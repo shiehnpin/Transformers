@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Test"
+                android:text=""
                 tools:text="TransformerName" />
 
             <LinearLayout
@@ -78,13 +78,13 @@
                 </RadioGroup>
             </LinearLayout>
 
-            <com.enping.transformers.RatingSeekBar
+            <com.enping.transformers.ui.list.RatingSeekBar
                 android:id="@+id/skb_strength_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="strength" />
 
-            <com.enping.transformers.RatingSeekBar
+            <com.enping.transformers.ui.list.RatingSeekBar
                 android:id="@+id/skb_intelligence_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
