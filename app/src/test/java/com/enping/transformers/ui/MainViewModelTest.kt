@@ -1,113 +1,62 @@
 package com.enping.transformers.ui
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.enping.transformers.data.TransformerRepo
 import com.enping.transformers.data.model.Transformer
 import com.google.common.truth.Truth
-import io.mockk.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
+import io.mockk.coEvery
+import io.mockk.coVerifyOrder
+import io.mockk.confirmVerified
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Test
-import org.koin.dsl.module
-import org.koin.test.KoinTest
-import org.koin.test.KoinTestRule
 import org.koin.test.get
-import java.util.concurrent.Executors
 
-internal class MainViewModelTest : KoinTest {
-
-    @get:Rule
-    val instantExecutorRule = InstantTaskExecutorRule()
-
-    private val mainThreadSurrogate = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
-
-    @Before
-    fun setUp() {
-        Dispatchers.setMain(mainThreadSurrogate)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-        mainThreadSurrogate.close()
-    }
-
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        modules(module {
-            single {
-                mockk<TransformerRepo>(relaxed = true)
-            }
-        })
-    }
+@ExperimentalCoroutinesApi
+internal class MainViewModelTest : BaseViewModelTest() {
 
     @Test
     fun `given first time use when open app then load transformers`() {
         val repo: TransformerRepo = get()
         val vm = MainViewModel(repo)
-        val expected = Transformer.create(name = "A")
-        val mockObserver = mockk<Observer<List<Transformer>>>(relaxUnitFun = true)
-        val slot = slot<List<Transformer>>()
-        coEvery { repo.getTransformers() } answers { listOf(expected) }
-        vm.transformers.observeForever(mockObserver)
+        val expected = listOf(
+            Transformer.create(name = "A")
+        )
+        coEvery { repo.getTransformers() } returns expected
         vm.load()
 
         coVerifyOrder {
             repo.getOrCreateAllSpark()
             repo.getTransformers()
-            mockObserver.onChanged(capture(slot))
         }
         confirmVerified(repo)
-        Truth.assertThat(slot.captured).isEqualTo(listOf(expected))
+        Truth.assertThat(vm.transformers.getOrAwaitValue()).isEqualTo(expected)
     }
 
     @Test
     fun `given has transformers when delete the transform then reload transformers`() {
         val repo: TransformerRepo = get()
         val vm = MainViewModel(repo)
-        val mockObserver = mockk<Observer<List<Transformer>>>(relaxUnitFun = true)
-        val slot = slot<List<Transformer>>()
-
-        coEvery {
-            repo.getTransformers()
-        } answers {
-            listOf(
-                Transformer.create(id = "A"),
-                Transformer.create(id = "B")
-            )
-        } andThen {
-            listOf(
-                Transformer.create(id = "B")
-            )
-        }
-        vm.transformers.observeForever(mockObserver)
+        val expected = listOf(
+            Transformer.create(id = "A"),
+            Transformer.create(id = "B")
+        )
+        val expectedAfterRemoved = listOf(
+            Transformer.create(id = "B")
+        )
+        coEvery { repo.getTransformers() } returns expected andThen expectedAfterRemoved
 
         vm.load()
         coVerifyOrder {
             repo.getOrCreateAllSpark()
             repo.getTransformers()
-            mockObserver.onChanged(capture(slot))
         }
-        Truth.assertThat(slot.captured).isEqualTo(listOf(
-            Transformer.create(id = "A"),
-            Transformer.create(id = "B")
-        ))
+        Truth.assertThat(vm.transformers.getOrAwaitValue()).isEqualTo(expected)
 
         vm.delete("A")
         coVerifyOrder {
             repo.deleteTransformer("A")
             repo.getTransformers()
-            mockObserver.onChanged(capture(slot))
         }
-        Truth.assertThat(slot.captured).isEqualTo(listOf(
-            Transformer.create(id = "B")
-        ))
+        Truth.assertThat(vm.transformers.getOrAwaitValue()).isEqualTo(expectedAfterRemoved)
 
         confirmVerified(repo)
     }

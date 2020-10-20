@@ -29,7 +29,8 @@ class TransformerViewModel(private val repo: TransformerRepo) : ViewModel() {
 
     fun edit(transformer: Transformer){
         viewModelScope.launch {
-            _transformer.value = _transformer.value!!.copy(
+            val originalTransformer = _transformer.value?:return@launch
+            val updatedTransformer = originalTransformer.copy(
                 name = transformer.name,
                 strength = transformer.strength,
                 intelligence = transformer.intelligence,
@@ -41,6 +42,7 @@ class TransformerViewModel(private val repo: TransformerRepo) : ViewModel() {
                 skill = transformer.skill,
                 team = transformer.team
             )
+            _transformer.value = updatedTransformer
         }
     }
 
