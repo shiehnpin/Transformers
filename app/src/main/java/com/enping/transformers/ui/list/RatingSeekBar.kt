@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.enping.transformers.R
 import kotlinx.android.synthetic.main.layout_rating_seekbar.view.*
 
+//TODO, implement custom view onSaveState/onRestoreState
 class RatingSeekBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -63,6 +64,7 @@ class RatingSeekBar @JvmOverloads constructor(
 
     private fun update() {
         skbRating.progress = value - offset
+        skbRating.jumpDrawablesToCurrentState()
         tvValue.text = value.toString()
     }
 

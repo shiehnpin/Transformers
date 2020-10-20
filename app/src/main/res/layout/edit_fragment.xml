@@ -10,22 +10,20 @@
         android:id="@+id/btn_submit_edit_fragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Create"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sv_ratings_edit_fragment"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_ratings_edit_fragment" />
 
     <ScrollView
         android:id="@+id/sv_ratings_edit_fragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_submit_edit_fragment"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,18 +32,33 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <EditText
-                android:id="@+id/ed_name_edit_fragment"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text=""
-                tools:text="TransformerName" />
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.3"
+                    android:text="Name" />
+
+                <EditText
+                    android:id="@+id/ed_name_edit_fragment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:ems="10"
+                    android:hint="TransformerName"
+                    android:inputType="textPersonName"
+                    android:text="" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="50dp">
 
                 <TextView
                     android:layout_width="0dp"
@@ -57,7 +70,7 @@
                 <RadioGroup
                     android:id="@+id/rbg_team_edit_fragment"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.7"
                     android:orientation="horizontal">
 
@@ -89,6 +102,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="intelligence" />
+
+            <com.enping.transformers.ui.list.RatingSeekBar
+                android:id="@+id/skb_speed_edit_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ratingName="speed" />
+
+            <com.enping.transformers.ui.list.RatingSeekBar
+                android:id="@+id/skb_endurance_edit_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ratingName="endurance" />
+
+            <com.enping.transformers.ui.list.RatingSeekBar
+                android:id="@+id/skb_rank_edit_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ratingName="rank" />
+
+            <com.enping.transformers.ui.list.RatingSeekBar
+                android:id="@+id/skb_courage_edit_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ratingName="courage" />
+
+            <com.enping.transformers.ui.list.RatingSeekBar
+                android:id="@+id/skb_firepower_edit_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ratingName="firepower" />
+
+            <com.enping.transformers.ui.list.RatingSeekBar
+                android:id="@+id/skb_skill_edit_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ratingName="skill" />
 
         </LinearLayout>
     </ScrollView>

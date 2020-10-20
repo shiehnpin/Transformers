@@ -38,8 +38,8 @@ class TransformerEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         vm.transformer.observe(viewLifecycleOwner, Observer {
             if (!this::cachedTransformer.isInitialized) {
-                setupListener()
                 update(it)
+                setupListener()
             }
             cachedTransformer = it
         })
@@ -63,6 +63,24 @@ class TransformerEditFragment : Fragment() {
         skb_intelligence_edit_fragment.onRatingChangeListener = { value ->
             vm.edit(cachedTransformer.copy(intelligence = value))
         }
+        skb_speed_edit_fragment.onRatingChangeListener = { value ->
+            vm.edit(cachedTransformer.copy(speed = value))
+        }
+        skb_endurance_edit_fragment.onRatingChangeListener = { value ->
+            vm.edit(cachedTransformer.copy(endurance = value))
+        }
+        skb_rank_edit_fragment.onRatingChangeListener = { value ->
+            vm.edit(cachedTransformer.copy(rank = value))
+        }
+        skb_courage_edit_fragment.onRatingChangeListener = { value ->
+            vm.edit(cachedTransformer.copy(courage = value))
+        }
+        skb_firepower_edit_fragment.onRatingChangeListener = { value ->
+            vm.edit(cachedTransformer.copy(firepower = value))
+        }
+        skb_skill_edit_fragment.onRatingChangeListener = { value ->
+            vm.edit(cachedTransformer.copy(skill = value))
+        }
         rbg_team_edit_fragment.setOnCheckedChangeListener { _, checkedId ->
             val team =
                 if (checkedId == R.id.rb_team_a_edit_fragment) Team.Autobots else Team.Decepticons
@@ -78,10 +96,22 @@ class TransformerEditFragment : Fragment() {
         super.onDestroyView()
     }
 
-    //TODO, implement custom view onSaveState/onRestoreState
     private fun update(transformer: Transformer) {
+        //Prevent moving cursor
+        if (ed_name_edit_fragment.text.toString() != transformer.name)
+            ed_name_edit_fragment.setText(transformer.name)
+        rb_team_a_edit_fragment.isChecked = transformer.enumTeam == Team.Autobots
+        rb_team_a_edit_fragment.jumpDrawablesToCurrentState()//Prevent animation when entering
+        rb_team_d_edit_fragment.isChecked = transformer.enumTeam == Team.Decepticons
+        rb_team_d_edit_fragment.jumpDrawablesToCurrentState()//Prevent animation when entering
         skb_strength_edit_fragment.setRating(transformer.strength)
         skb_intelligence_edit_fragment.setRating(transformer.intelligence)
+        skb_speed_edit_fragment.setRating(transformer.speed)
+        skb_endurance_edit_fragment.setRating(transformer.endurance)
+        skb_rank_edit_fragment.setRating(transformer.rank)
+        skb_courage_edit_fragment.setRating(transformer.courage)
+        skb_firepower_edit_fragment.setRating(transformer.firepower)
+        skb_skill_edit_fragment.setRating(transformer.skill)
     }
 
     companion object {
