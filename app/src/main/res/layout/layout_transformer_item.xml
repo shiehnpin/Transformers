@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <Button
+        android:id="@+id/btn_remove_transformer_list_fragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Remove"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_edit_transformer_list_fragment" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:divider="@drawable/divider"
+        android:orientation="vertical"
+        android:paddingStart="0dp"
+        android:paddingEnd="8dp"
+        android:showDividers="middle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/view_name_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_strength_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="strength" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_intelligence_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="intelligence" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_speed_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="speed" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_endurance_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="endurance" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_rank_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="rank" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_courage_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="courage" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_firepower_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="firepower" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_skill_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="skill" />
+
+        <com.enping.transformers.ui.list.RatingView
+            android:id="@+id/view_team_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratingName="team" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_team_icon_item_list_fragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="Team"
+        app:layout_constraintBottom_toTopOf="@+id/btn_edit_transformer_list_fragment"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/btn_edit_transformer_list_fragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Edit"
+        app:layout_constraintBottom_toTopOf="@+id/btn_remove_transformer_list_fragment"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_team_icon_item_list_fragment" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
