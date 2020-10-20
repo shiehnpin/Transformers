@@ -79,6 +79,9 @@ data class Transformer(
         const val MAX_RANK = 10
         const val MIN_RANK = 1
 
+        const val OptimusPrime = "Optimus Prime"
+        const val Predaking = "Predaking"
+
         fun create(
             name: String = "",
             strength: Int = MIN_RANK,
