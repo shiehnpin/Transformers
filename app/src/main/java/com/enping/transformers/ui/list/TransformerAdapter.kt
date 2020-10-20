@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.layout_transformer_item.view.*
 
 class TransformerAdapter : RecyclerView.Adapter<TransformerAdapter.TransformerVH>() {
 
-    var transformers = listOf<Transformer>()
+    private var transformers = listOf<Transformer>()
     var removeClickListener : (id: String) -> Unit = {}
     var editClickListener: (id:String) -> Unit = {}
 
@@ -47,6 +48,32 @@ class TransformerAdapter : RecyclerView.Adapter<TransformerAdapter.TransformerVH
 
     override fun onBindViewHolder(holder: TransformerVH, position: Int) {
         bind(holder, transformers[position])
+    }
+
+    fun update(newTransformers: List<Transformer>){
+        val newList = newTransformers
+        val previousList = this.transformers
+
+        val res = DiffUtil.calculateDiff(object :DiffUtil.Callback(){
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return previousList[oldItemPosition].id == newList[newItemPosition].id
+            }
+
+            override fun getOldListSize(): Int {
+                return previousList.size
+            }
+
+            override fun getNewListSize(): Int {
+                return newList.size
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return previousList[oldItemPosition] == newList[newItemPosition]
+            }
+        })
+
+        this.transformers = newList
+        res.dispatchUpdatesTo(this)
     }
 
     private fun bind(holder: TransformerVH, transformer: Transformer) {

@@ -74,8 +74,7 @@ class TransformersListFragment : Fragment() {
             navEditTransformer(id)
         }
         vm.transformers.observe(viewLifecycleOwner, Observer {
-            adapter.transformers = it
-            adapter.notifyDataSetChanged()
+            adapter.update(it)
         })
         rv_transformers_list_fragment.adapter = adapter
         rv_transformers_list_fragment.addItemDecoration(
