@@ -56,6 +56,7 @@ class TransformerRepoImpl(
 
     override suspend fun createTransformer(transformer: Transformer): Transformer {
         check(local.hasAllSpark())
+        check(transformer.name.isNotBlank()) { "Name must not blank" }
 
         val createdTransformer = remote.createTransformer(transformer)
         local.insertTransformer(createdTransformer)
@@ -64,7 +65,8 @@ class TransformerRepoImpl(
 
     override suspend fun updateTransformer(transformer: Transformer): Transformer {
         check(local.hasAllSpark())
-
+        check(transformer.name.isNotBlank()) { "Name must not blank" }
+        
         val updatedTransformer = remote.updateTransformer(transformer)
         local.updateTransformer(updatedTransformer)
         return updatedTransformer

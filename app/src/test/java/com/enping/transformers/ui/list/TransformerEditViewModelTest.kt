@@ -55,4 +55,26 @@ internal class TransformerEditViewModelTest : BaseViewModelTest() {
         Truth.assertThat(vm.isSubmit.getOrAwaitValue()).isEqualTo(true)
         confirmVerified(repo)
     }
+
+    @Test
+    fun `given has all spark when user update transformer with blank name then emit error`() {
+        val repo: TransformerRepo = get()
+        val vm = TransformerEditViewModel(repo)
+        coEvery { repo.getTransformer(any()) } returns Transformer.create(id = "1")
+        coEvery { repo.updateTransformer(any()) } throws IllegalStateException("Name must not blank")
+
+        vm.load(true, "1")
+        vm.edit(Transformer.create(id = "1"))
+        vm.save()
+
+        Truth.assertThat(vm.errorEvent.getOrAwaitValue().peekContent())
+            .isInstanceOf(IllegalStateException::class.java)
+        Truth.assertThat(vm.isSubmit.getOrAwaitValue())
+            .isEqualTo(false)
+        coVerify {
+            repo.getTransformer("1")
+            repo.updateTransformer(any())
+        }
+        confirmVerified(repo)
+    }
 }

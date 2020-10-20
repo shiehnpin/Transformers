@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enping.transformers.data.TransformerRepo
 import com.enping.transformers.data.model.Transformer
+import com.enping.transformers.ui.Event
 import kotlinx.coroutines.launch
 
 class TransformerEditViewModel(private val repo: TransformerRepo) : ViewModel() {
@@ -16,8 +17,11 @@ class TransformerEditViewModel(private val repo: TransformerRepo) : ViewModel() 
     private val _isEdit = MutableLiveData<Boolean>()
     val isEdit: LiveData<Boolean> = _isEdit
 
-    private val _isSubmit = MutableLiveData<Boolean>(false)
+    private val _isSubmit = MutableLiveData<Boolean>()
     val isSubmit: LiveData<Boolean> = _isSubmit
+
+    private val _errorEvent = MutableLiveData<Event<Throwable>>()
+    val errorEvent: LiveData<Event<Throwable>> = _errorEvent
 
     fun load(isEdit: Boolean, id: String) {
         viewModelScope.launch {
@@ -49,13 +53,18 @@ class TransformerEditViewModel(private val repo: TransformerRepo) : ViewModel() 
 
     fun save() {
         viewModelScope.launch {
-            val transformer = _transformer.value ?: return@launch
-            if (isEdit.value == true) {
-                repo.updateTransformer(transformer)
-            } else {
-                repo.createTransformer(transformer)
+            try {
+                val transformer = _transformer.value ?: return@launch
+                if (isEdit.value == true) {
+                    repo.updateTransformer(transformer)
+                } else {
+                    repo.createTransformer(transformer)
+                }
+                _isSubmit.value = true
+            } catch (e: Throwable) {
+                _errorEvent.value = Event(e)
+                _isSubmit.value = false
             }
-            _isSubmit.value = true
         }
     }
 }

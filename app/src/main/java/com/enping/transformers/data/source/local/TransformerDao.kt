@@ -11,7 +11,7 @@ interface TransformerDao{
     suspend fun getTransformers(): List<Transformer>
 
     @Query("SELECT * FROM transformer WHERE id = :id LIMIT 1")
-    fun getTransformer(id: String): Transformer
+    suspend fun getTransformer(id: String): Transformer
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateTransformer(transformer: Transformer)

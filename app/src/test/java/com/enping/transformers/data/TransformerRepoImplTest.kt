@@ -215,4 +215,33 @@ internal class TransformerRepoImplTest : KoinTest {
             }
             confirmVerified(local, remote)
         }
+
+    @Test(expected = IllegalStateException::class)
+    fun `given Allspark exist when create blank name transformer then throw exception`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            coEvery { local.getAllSpark() } returns key
+            coEvery { local.hasAllSpark() } returns true
+            val repo = TransformerRepoImpl(remote, local)
+            repo.getOrCreateAllSpark()
+            repo.createTransformer(Transformer.create())
+            confirmVerified(local, remote)
+        }
+
+    @Test(expected = IllegalStateException::class)
+    fun `given Allspark exist when update blank name transformer then throw exception`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            coEvery { local.getAllSpark() } returns key
+            coEvery { local.hasAllSpark() } returns true
+            val repo = TransformerRepoImpl(remote, local)
+            repo.getOrCreateAllSpark()
+            repo.updateTransformer(Transformer.create())
+            confirmVerified(local, remote)
+        }
+
 }
