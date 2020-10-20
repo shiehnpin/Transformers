@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enping.transformers.data.TransformerRepo
 import com.enping.transformers.data.model.Transformer
+import com.enping.transformers.ui.util.Event
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repo: TransformerRepo) : ViewModel() {

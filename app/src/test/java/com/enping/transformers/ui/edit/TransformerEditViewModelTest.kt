@@ -1,4 +1,4 @@
-package com.enping.transformers.ui.list
+package com.enping.transformers.ui.edit
 
 import com.enping.transformers.data.TransformerRepo
 import com.enping.transformers.data.model.Transformer

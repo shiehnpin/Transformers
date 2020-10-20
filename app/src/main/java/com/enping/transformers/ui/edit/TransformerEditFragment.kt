@@ -1,6 +1,5 @@
-package com.enping.transformers.ui.list
+package com.enping.transformers.ui.edit
 
-import android.accounts.NetworkErrorException
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,19 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.enping.transformers.R
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
-import com.enping.transformers.ui.EventObserver
+import com.enping.transformers.ui.util.EventObserver
 import com.enping.transformers.ui.showToast
 import kotlinx.android.synthetic.main.edit_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.HttpException
-import timber.log.Timber
-import java.net.UnknownHostException
 
 class TransformerEditFragment : Fragment() {
     private val vm: TransformerEditViewModel by viewModel()
@@ -79,9 +74,10 @@ class TransformerEditFragment : Fragment() {
     }
 
     private fun setupErrorMessage() {
-        vm.errorEvent.observe(viewLifecycleOwner, EventObserver {
-            it.showToast(requireContext())
-        })
+        vm.errorEvent.observe(viewLifecycleOwner,
+            EventObserver {
+                it.showToast(requireContext())
+            })
     }
 
     private fun setupListener() {
@@ -149,14 +145,16 @@ class TransformerEditFragment : Fragment() {
     companion object {
         private const val IS_EDIT = "is_edit"
         private const val ID = "id"
-        fun createTransformer() = TransformerEditFragment().apply {
+        fun createTransformer() = TransformerEditFragment()
+            .apply {
             arguments = Bundle().apply {
                 putBoolean(IS_EDIT, false)
                 putString(ID, "")
             }
         }
 
-        fun editTransformer(id: String) = TransformerEditFragment().apply {
+        fun editTransformer(id: String) = TransformerEditFragment()
+            .apply {
             arguments = Bundle().apply {
                 putBoolean(IS_EDIT, true)
                 putString(ID, id)

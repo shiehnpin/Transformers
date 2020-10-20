@@ -1,4 +1,4 @@
-package com.enping.transformers.ui.list
+package com.enping.transformers.ui.edit
 
 import android.content.Context
 import android.util.AttributeSet

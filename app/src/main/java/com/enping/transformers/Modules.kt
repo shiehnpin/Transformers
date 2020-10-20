@@ -9,7 +9,7 @@ import com.enping.transformers.data.source.local.TransformerDatabase
 import com.enping.transformers.data.source.remote.RemoteDataSource
 import com.enping.transformers.data.source.remote.RemoteDataSourceImpl
 import com.enping.transformers.ui.MainViewModel
-import com.enping.transformers.ui.list.TransformerEditViewModel
+import com.enping.transformers.ui.edit.TransformerEditViewModel
 import okhttp3.HttpUrl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

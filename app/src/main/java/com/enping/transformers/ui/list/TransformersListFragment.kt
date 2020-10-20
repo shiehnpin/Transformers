@@ -1,24 +1,21 @@
 package com.enping.transformers.ui.list
 
-import android.accounts.NetworkErrorException
 import android.graphics.drawable.ClipDrawable.HORIZONTAL
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.enping.transformers.R
-import com.enping.transformers.ui.EventObserver
+import com.enping.transformers.ui.util.EventObserver
 import com.enping.transformers.ui.MainViewModel
+import com.enping.transformers.ui.edit.TransformerEditFragment
 import com.enping.transformers.ui.showToast
 import kotlinx.android.synthetic.main.list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.HttpException
-import timber.log.Timber
 
 class TransformersListFragment : Fragment() {
     private lateinit var adapter: TransformerAdapter
@@ -46,9 +43,10 @@ class TransformersListFragment : Fragment() {
     }
 
     private fun setupErrorMessage() {
-        vm.errorEvent.observe(viewLifecycleOwner, EventObserver {
-            it.showToast(requireContext())
-        })
+        vm.errorEvent.observe(viewLifecycleOwner,
+            EventObserver {
+                it.showToast(requireContext())
+            })
     }
 
     private fun setupActions() {

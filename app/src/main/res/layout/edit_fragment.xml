@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.list.TransformerEditFragment">
+    tools:context=".ui.edit.TransformerEditFragment">
 
     <Button
         android:id="@+id/btn_submit_edit_fragment"
@@ -91,49 +91,49 @@
                 </RadioGroup>
             </LinearLayout>
 
-            <com.enping.transformers.ui.list.RatingSeekBar
+            <com.enping.transformers.ui.edit.RatingSeekBar
                 android:id="@+id/skb_strength_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="strength" />
 
-            <com.enping.transformers.ui.list.RatingSeekBar
+            <com.enping.transformers.ui.edit.RatingSeekBar
                 android:id="@+id/skb_intelligence_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="intelligence" />
 
-            <com.enping.transformers.ui.list.RatingSeekBar
+            <com.enping.transformers.ui.edit.RatingSeekBar
                 android:id="@+id/skb_speed_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="speed" />
 
-            <com.enping.transformers.ui.list.RatingSeekBar
+            <com.enping.transformers.ui.edit.RatingSeekBar
                 android:id="@+id/skb_endurance_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="endurance" />
 
-            <com.enping.transformers.ui.list.RatingSeekBar
+            <com.enping.transformers.ui.edit.RatingSeekBar
                 android:id="@+id/skb_rank_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="rank" />
 
-            <com.enping.transformers.ui.list.RatingSeekBar
+            <com.enping.transformers.ui.edit.RatingSeekBar
                 android:id="@+id/skb_courage_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="courage" />
 
-            <com.enping.transformers.ui.list.RatingSeekBar
+            <com.enping.transformers.ui.edit.RatingSeekBar
                 android:id="@+id/skb_firepower_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:ratingName="firepower" />
 
-            <com.enping.transformers.ui.list.RatingSeekBar
+            <com.enping.transformers.ui.edit.RatingSeekBar
                 android:id="@+id/skb_skill_edit_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
