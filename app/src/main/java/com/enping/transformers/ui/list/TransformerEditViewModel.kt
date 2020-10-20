@@ -8,7 +8,7 @@ import com.enping.transformers.data.TransformerRepo
 import com.enping.transformers.data.model.Transformer
 import kotlinx.coroutines.launch
 
-class TransformerViewModel(private val repo: TransformerRepo) : ViewModel() {
+class TransformerEditViewModel(private val repo: TransformerRepo) : ViewModel() {
 
     private val _transformer = MutableLiveData<Transformer>()
     val transformer : LiveData<Transformer> = _transformer

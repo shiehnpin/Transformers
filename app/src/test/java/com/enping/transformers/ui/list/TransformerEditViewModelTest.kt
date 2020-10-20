@@ -13,12 +13,12 @@ import org.junit.Test
 import org.koin.test.get
 
 @ExperimentalCoroutinesApi
-internal class TransformerViewModelTest : BaseViewModelTest() {
+internal class TransformerEditViewModelTest : BaseViewModelTest() {
 
     @Test
     fun `given has all spark when user create new transformer then call repo create`() {
         val repo: TransformerRepo = get()
-        val vm = TransformerViewModel(repo)
+        val vm = TransformerEditViewModel(repo)
         val expected = Transformer.create()
         val expectedAfterEdit = expected.copy(name = "new")
         vm.load(false, "")
@@ -36,7 +36,7 @@ internal class TransformerViewModelTest : BaseViewModelTest() {
     @Test
     fun `given has all spark when user update exists transformer then call repo edit`() {
         val repo: TransformerRepo = get()
-        val vm = TransformerViewModel(repo)
+        val vm = TransformerEditViewModel(repo)
         val expected = Transformer.create(id = "1")
         val expectedAfterEdit = Transformer.create(id = "1", name = "new")
         coEvery { repo.getTransformer(expected.id) } returns expected
