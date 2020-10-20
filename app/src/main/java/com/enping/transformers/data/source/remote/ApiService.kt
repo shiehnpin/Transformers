@@ -19,5 +19,5 @@ interface ApiService {
     suspend fun updateTransformer(@Body transformer: Transformer): Transformer
 
     @DELETE("transformers/{id}")
-    suspend fun deleteTransformer(@Path("id") id: String): Response<Unit>
+    suspend fun deleteTransformer(@Path("id") id: String)
 }

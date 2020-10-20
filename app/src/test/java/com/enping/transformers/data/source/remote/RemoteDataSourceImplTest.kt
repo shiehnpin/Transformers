@@ -96,7 +96,10 @@ internal class RemoteDataSourceImplTest : KoinTest {
     fun `give has AllSpark when delete transformer then remove it from server`() {
         val allSpark = "token"
         val removeId = "id"
-        val mockResponse = MockResponse()
+        val mockResponse = MockResponse().apply {
+            setResponseCode(204)
+            setBody("")
+        }
         get<MockWebServer>().enqueue(mockResponse)
         val remote = RemoteDataSourceImpl(get())
         runBlocking {

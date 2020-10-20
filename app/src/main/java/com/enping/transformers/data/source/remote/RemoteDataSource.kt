@@ -68,7 +68,19 @@ class RemoteDataSourceImpl(baseUrl: HttpUrl) : RemoteDataSource {
     }
 
     override suspend fun deleteTransformer(transformerId: String) {
-        service.deleteTransformer(transformerId)
+        try {
+            service.deleteTransformer(transformerId)
+        } catch (e: Throwable) {
+            /**
+             *  This is a work around, since deletion response empty body.
+             *  https://github.com/square/retrofit/issues/1554
+             */
+            if (e !is NullPointerException) {
+                throw e
+            } else {
+                //Empty Body
+            }
+        }
     }
 
     override fun setAllSpark(allSpark: String) {
