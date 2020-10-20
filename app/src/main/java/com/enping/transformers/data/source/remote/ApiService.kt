@@ -2,6 +2,7 @@ package com.enping.transformers.data.source.remote
 
 import com.enping.transformers.data.model.Transformer
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
@@ -18,5 +19,5 @@ interface ApiService {
     suspend fun updateTransformer(@Body transformer: Transformer): Transformer
 
     @DELETE("transformers/{id}")
-    suspend fun deleteTransformer(@Path("id") id: String)
+    suspend fun deleteTransformer(@Path("id") id: String): Response<Unit>
 }

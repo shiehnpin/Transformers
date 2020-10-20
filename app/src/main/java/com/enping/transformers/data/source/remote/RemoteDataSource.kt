@@ -68,7 +68,7 @@ class RemoteDataSourceImpl(baseUrl: HttpUrl) : RemoteDataSource {
     }
 
     override suspend fun deleteTransformer(transformerId: String) {
-        return service.deleteTransformer(transformerId)
+        service.deleteTransformer(transformerId)
     }
 
     override fun setAllSpark(allSpark: String) {
