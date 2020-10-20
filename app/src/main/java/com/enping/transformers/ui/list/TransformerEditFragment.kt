@@ -1,11 +1,13 @@
 package com.enping.transformers.ui.list
 
+import android.accounts.NetworkErrorException
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,6 +17,8 @@ import com.enping.transformers.data.model.Transformer
 import com.enping.transformers.ui.EventObserver
 import kotlinx.android.synthetic.main.edit_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import retrofit2.HttpException
+import timber.log.Timber
 
 class TransformerEditFragment : Fragment() {
     private val vm: TransformerEditViewModel by viewModel()
@@ -38,19 +42,9 @@ class TransformerEditFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        vm.transformer.observe(viewLifecycleOwner, Observer {
-            if (!this::cachedTransformer.isInitialized) {
-                update(it)
-                setupListener()
-            }
-            cachedTransformer = it
-        })
-        vm.isSubmit.observe(viewLifecycleOwner, Observer { isSubmit ->
-            if (isSubmit) parentFragmentManager.popBackStack()
-        })
-        vm.errorEvent.observe(viewLifecycleOwner, EventObserver{
-            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-        })
+        setupTransformerDetail()
+        setupAction()
+        setupErrorMessage()
 
         if (savedInstanceState == null) {
             vm.load(
@@ -58,6 +52,41 @@ class TransformerEditFragment : Fragment() {
                 requireArguments().getString(ID, "")
             )
         }
+    }
+
+    private fun setupTransformerDetail() {
+        vm.transformer.observe(viewLifecycleOwner, Observer {
+            if (!this::cachedTransformer.isInitialized) {
+                update(it)
+                setupListener()
+            }
+            cachedTransformer = it
+        })
+    }
+
+    private fun setupAction() {
+        vm.isSubmit.observe(viewLifecycleOwner, Observer { isSubmit ->
+            if (isSubmit) {
+                btn_submit_edit_fragment.text = "Done"
+                parentFragmentManager.popBackStack()
+            } else {
+                btn_submit_edit_fragment.text = "Save"
+                btn_submit_edit_fragment.isEnabled = true
+            }
+        })
+    }
+
+    private fun setupErrorMessage() {
+        vm.errorEvent.observe(viewLifecycleOwner, EventObserver {
+            when (it) {
+                is IllegalStateException ->
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                is HttpException ->
+                    Toast.makeText(requireContext(), "Server error", Toast.LENGTH_SHORT).show()
+                else ->
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setupListener() {
@@ -92,6 +121,9 @@ class TransformerEditFragment : Fragment() {
             vm.edit(cachedTransformer.copy(team = team.key))
         }
         btn_submit_edit_fragment.setOnClickListener {
+            (it as TextView)
+            it.isEnabled = false
+            it.text = "Uploading..."
             vm.save()
         }
     }

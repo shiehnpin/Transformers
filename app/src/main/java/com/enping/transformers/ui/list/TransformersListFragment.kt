@@ -1,18 +1,23 @@
 package com.enping.transformers.ui.list
 
+import android.accounts.NetworkErrorException
 import android.graphics.drawable.ClipDrawable.HORIZONTAL
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.enping.transformers.R
+import com.enping.transformers.ui.EventObserver
 import com.enping.transformers.ui.MainViewModel
 import kotlinx.android.synthetic.main.list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import retrofit2.HttpException
+import timber.log.Timber
 
 class TransformersListFragment : Fragment() {
     private lateinit var adapter: TransformerAdapter
@@ -32,15 +37,30 @@ class TransformersListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupActions()
         setupRecyclerView()
+        setupErrorMessage()
         vm.isLoaded.observe(viewLifecycleOwner, Observer { isLoaded ->
             enableActions(isLoaded)
         })
         vm.load()
     }
 
+    private fun setupErrorMessage() {
+        vm.errorEvent.observe(viewLifecycleOwner, EventObserver {
+            Timber.e(it)
+            when (it) {
+                is IllegalStateException ->
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                is HttpException ->
+                    Toast.makeText(requireContext(), "Server error", Toast.LENGTH_SHORT).show()
+                else ->
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun setupActions() {
         btn_fight_list_fragment.setOnClickListener {
-
+            TODO()
         }
         btn_create_list_fragment.setOnClickListener {
             navCreateTransformer()
