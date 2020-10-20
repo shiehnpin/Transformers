@@ -15,10 +15,12 @@ import com.enping.transformers.R
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
 import com.enping.transformers.ui.EventObserver
+import com.enping.transformers.ui.showToast
 import kotlinx.android.synthetic.main.edit_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 
 class TransformerEditFragment : Fragment() {
     private val vm: TransformerEditViewModel by viewModel()
@@ -78,14 +80,7 @@ class TransformerEditFragment : Fragment() {
 
     private fun setupErrorMessage() {
         vm.errorEvent.observe(viewLifecycleOwner, EventObserver {
-            when (it) {
-                is IllegalStateException ->
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                is HttpException ->
-                    Toast.makeText(requireContext(), "Server error", Toast.LENGTH_SHORT).show()
-                else ->
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-            }
+            it.showToast(requireContext())
         })
     }
 

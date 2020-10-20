@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.enping.transformers.R
 import com.enping.transformers.ui.EventObserver
 import com.enping.transformers.ui.MainViewModel
+import com.enping.transformers.ui.showToast
 import kotlinx.android.synthetic.main.list_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.HttpException
@@ -46,15 +47,7 @@ class TransformersListFragment : Fragment() {
 
     private fun setupErrorMessage() {
         vm.errorEvent.observe(viewLifecycleOwner, EventObserver {
-            Timber.e(it)
-            when (it) {
-                is IllegalStateException ->
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                is HttpException ->
-                    Toast.makeText(requireContext(), "Server error", Toast.LENGTH_SHORT).show()
-                else ->
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-            }
+            it.showToast(requireContext())
         })
     }
 
