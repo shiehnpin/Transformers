@@ -21,14 +21,16 @@ internal class MainViewModelTest : BaseViewModelTest() {
             Transformer.create(name = "A")
         )
         coEvery { repo.getTransformers() } returns expected
-        vm.load()
+        Truth.assertThat(vm.isLoaded.getOrAwaitValue()).isEqualTo(false)
 
+        vm.load()
         coVerifyOrder {
             repo.getOrCreateAllSpark()
             repo.getTransformers()
         }
         confirmVerified(repo)
         Truth.assertThat(vm.transformers.getOrAwaitValue()).isEqualTo(expected)
+        Truth.assertThat(vm.isLoaded.getOrAwaitValue()).isEqualTo(true)
     }
 
     @Test
@@ -43,6 +45,7 @@ internal class MainViewModelTest : BaseViewModelTest() {
             Transformer.create(id = "B")
         )
         coEvery { repo.getTransformers() } returns expected andThen expectedAfterRemoved
+        Truth.assertThat(vm.isLoaded.getOrAwaitValue()).isEqualTo(false)
 
         vm.load()
         coVerifyOrder {
@@ -57,6 +60,7 @@ internal class MainViewModelTest : BaseViewModelTest() {
             repo.getTransformers()
         }
         Truth.assertThat(vm.transformers.getOrAwaitValue()).isEqualTo(expectedAfterRemoved)
+        Truth.assertThat(vm.isLoaded.getOrAwaitValue()).isEqualTo(true)
 
         confirmVerified(repo)
     }

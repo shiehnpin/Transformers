@@ -14,11 +14,15 @@ class MainViewModel(private val repo: TransformerRepo) : ViewModel() {
     private val _transformers = MutableLiveData<List<Transformer>>()
     val transformers : LiveData<List<Transformer>> = _transformers
 
+    private val _isLoaded = MutableLiveData<Boolean>(false)
+    val isLoaded : LiveData<Boolean> = _isLoaded
+
     fun load(){
         viewModelScope.launch {
             //Todo, handle network disconnect
             repo.getOrCreateAllSpark()
             _transformers.value = repo.getTransformers()
+            _isLoaded.value = true
         }
     }
 
