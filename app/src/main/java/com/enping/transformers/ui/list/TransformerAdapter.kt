@@ -7,10 +7,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.enping.transformers.R
 import com.enping.transformers.data.model.Transformer
 import kotlinx.android.synthetic.main.layout_rating_view.view.*
 import kotlinx.android.synthetic.main.layout_transformer_item.view.*
+
 
 class TransformerAdapter : RecyclerView.Adapter<TransformerAdapter.TransformerVH>() {
 
@@ -66,6 +68,7 @@ class TransformerAdapter : RecyclerView.Adapter<TransformerAdapter.TransformerVH
         }
         Glide.with(holder.itemView.context)
             .load(transformer.teamIcon)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.itemView.iv_team_icon_item_list_fragment)
     }
 }
