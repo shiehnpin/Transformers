@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import com.enping.transformers.R
 import com.enping.transformers.ui.MainViewModel
 import kotlinx.android.synthetic.main.list_fragment.*
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TransformersListFragment : Fragment() {
 
@@ -25,11 +25,12 @@ class TransformersListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val vm: MainViewModel by inject()
+        val vm: MainViewModel by viewModel()
         fab_add_transformer_list_fragment.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.container, TransformerEditFragment.createTransformer())
-                .commitNow()
+                .addToBackStack(null)
+                .commit()
         }
         vm.transformers.observe(viewLifecycleOwner, Observer {
         })

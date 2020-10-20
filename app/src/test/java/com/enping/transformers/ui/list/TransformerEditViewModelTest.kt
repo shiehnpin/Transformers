@@ -30,6 +30,7 @@ internal class TransformerEditViewModelTest : BaseViewModelTest() {
 
         vm.save()
         coVerify { repo.createTransformer(expectedAfterEdit) }
+        Truth.assertThat(vm.isSubmit.getOrAwaitValue()).isEqualTo(true)
         confirmVerified(repo)
     }
 
@@ -51,6 +52,7 @@ internal class TransformerEditViewModelTest : BaseViewModelTest() {
 
         vm.save()
         coVerify { repo.updateTransformer(expectedAfterEdit) }
+        Truth.assertThat(vm.isSubmit.getOrAwaitValue()).isEqualTo(true)
         confirmVerified(repo)
     }
 }

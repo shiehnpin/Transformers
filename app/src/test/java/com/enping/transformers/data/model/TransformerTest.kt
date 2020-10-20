@@ -36,7 +36,7 @@ internal class TransformerTest {
         )
 
         Truth.assertThat(actual).isEqualTo(expected)
-        Truth.assertThat(actual.rating)
+        Truth.assertThat(actual.overAllRating)
             .isEqualTo(
                 expected.strength +
                         expected.intelligence +
@@ -44,6 +44,7 @@ internal class TransformerTest {
                         expected.endurance +
                         expected.firepower
             )
+        Truth.assertThat(actual.enumTeam).isEqualTo(Team.Autobots)
     }
 
 
@@ -76,7 +77,7 @@ internal class TransformerTest {
         )
 
         Truth.assertThat(actual).isEqualTo(expected)
-        Truth.assertThat(actual.rating)
+        Truth.assertThat(actual.overAllRating)
             .isEqualTo(
                 expected.strength +
                         expected.intelligence +
@@ -84,6 +85,7 @@ internal class TransformerTest {
                         expected.endurance +
                         expected.firepower
             )
+        Truth.assertThat(actual.enumTeam).isEqualTo(Team.Decepticons)
     }
 
     @Test(expected = IllegalStateException::class)

@@ -16,6 +16,9 @@ class TransformerEditViewModel(private val repo: TransformerRepo) : ViewModel() 
     private val _isEdit = MutableLiveData<Boolean>()
     val isEdit: LiveData<Boolean> = _isEdit
 
+    private val _isSubmit = MutableLiveData<Boolean>(false)
+    val isSubmit: LiveData<Boolean> = _isSubmit
+
     fun load(isEdit: Boolean, id: String) {
         viewModelScope.launch {
             _isEdit.value = isEdit
@@ -52,6 +55,7 @@ class TransformerEditViewModel(private val repo: TransformerRepo) : ViewModel() 
             } else {
                 repo.createTransformer(transformer)
             }
+            _isSubmit.value = true
         }
     }
 }

@@ -61,12 +61,19 @@ data class Transformer(
     @SerializedName("team_icon")
     val teamIcon: String = ""
 ) {
-    val rating: Int
+    val overAllRating: Int
         get() = strength +
                 intelligence +
                 speed +
                 endurance +
                 firepower
+
+    val enumTeam: Team
+        get() = when (team) {
+            Team.Autobots.key -> Team.Autobots
+            Team.Decepticons.key -> Team.Decepticons
+            else -> error("team must be either Autobots or Decepticons")
+        }
 
     companion object {
         const val MAX_RANK = 10

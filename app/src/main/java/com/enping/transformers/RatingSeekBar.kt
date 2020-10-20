@@ -20,8 +20,8 @@ class RatingSeekBar @JvmOverloads constructor(
 
     private val offset = 1
     private var value = 1
-    val ratingName: String
-    var onRatingChangeListener: (Int) -> Unit = {}
+    private val ratingName: String
+    var onRatingChangeListener: (Int) -> Unit = { }
 
     init {
         val attributes = attrs?.let {
@@ -42,7 +42,7 @@ class RatingSeekBar @JvmOverloads constructor(
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 value = progress + offset
                 update()
-                if(fromUser) onRatingChangeListener(value)
+                if (fromUser) onRatingChangeListener(value)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
