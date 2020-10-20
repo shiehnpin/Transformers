@@ -72,7 +72,7 @@ enum class BattleStatus {
 }
 
 enum class FighterStatus {
-    DESTROYED, VICTOR, ELIMINATED
+    DESTROYED, VICTOR, ELIMINATED, SKIP
 }
 
 data class FightResult(
