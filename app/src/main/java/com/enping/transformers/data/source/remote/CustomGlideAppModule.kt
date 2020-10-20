@@ -21,6 +21,16 @@ class CustomGlideAppModule() : AppGlideModule(){
 
         val client = OkHttpClient.Builder()
             .sslSocketFactory(socketFactory, socketFactory.trustManager)
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .header(
+                        "User-Agent",
+                        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit " +
+                                "/ 537.36(KHTML, like Gecko) Chrome  47.0.2526.106 Safari / 537.36"
+                    )
+                    .build()
+                chain.proceed(request)
+            }
             .readTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .build()
