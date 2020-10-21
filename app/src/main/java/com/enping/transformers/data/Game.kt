@@ -2,7 +2,10 @@ package com.enping.transformers.data
 
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
-class InsufficientFighterException : Exception()
+
+class InsufficientFighterException :
+    Exception("At least need one Autobot and one Deception to fight.")
+
 class Game(private val fightersList: List<Transformer>) {
     fun battle(): GameResult {
         val autobots = fightersList
@@ -11,7 +14,7 @@ class Game(private val fightersList: List<Transformer>) {
         val deceptions = fightersList
             .filter { it.enumTeam == Team.Decepticons }
             .sortedWith(compareByDescending(Transformer::rank).thenBy(Transformer::id))
-        if(autobots.isEmpty() || deceptions.isEmpty()){
+        if (autobots.isEmpty() || deceptions.isEmpty()) {
             throw InsufficientFighterException()
         }
         val count = Math.max(autobots.size, deceptions.size)

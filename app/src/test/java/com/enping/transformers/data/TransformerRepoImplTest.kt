@@ -6,6 +6,7 @@ import com.enping.transformers.data.source.local.LocalDataSource
 import com.enping.transformers.data.source.remote.RemoteDataSource
 import com.google.common.truth.Truth
 import io.mockk.*
+import junit.framework.Assert.fail
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
@@ -216,7 +217,7 @@ internal class TransformerRepoImplTest : KoinTest {
             confirmVerified(local, remote)
         }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun `given Allspark exist when create blank name transformer then throw exception`() =
         runBlocking {
             val remote: RemoteDataSource = get()
@@ -226,11 +227,21 @@ internal class TransformerRepoImplTest : KoinTest {
             coEvery { local.hasAllSpark() } returns true
             val repo = TransformerRepoImpl(remote, local)
             repo.getOrCreateAllSpark()
-            repo.createTransformer(Transformer.create())
+            try {
+                repo.createTransformer(Transformer.create())
+                fail()
+            } catch (e: Throwable) {
+                Truth.assertThat(e).isInstanceOf(IllegalStateException::class.java)
+            }
+            coVerifyOrder {
+                local.getAllSpark()
+                remote.setAllSpark(key)
+                local.hasAllSpark()
+            }
             confirmVerified(local, remote)
         }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun `given Allspark exist when update blank name transformer then throw exception`() =
         runBlocking {
             val remote: RemoteDataSource = get()
@@ -240,7 +251,87 @@ internal class TransformerRepoImplTest : KoinTest {
             coEvery { local.hasAllSpark() } returns true
             val repo = TransformerRepoImpl(remote, local)
             repo.getOrCreateAllSpark()
-            repo.updateTransformer(Transformer.create())
+
+            try {
+                repo.updateTransformer(Transformer.create())
+                fail()
+            } catch (e: Throwable) {
+                Truth.assertThat(e).isInstanceOf(IllegalStateException::class.java)
+            }
+            coVerifyOrder {
+                local.getAllSpark()
+                remote.setAllSpark(key)
+                local.hasAllSpark()
+            }
+            confirmVerified(local, remote)
+        }
+
+    @Test
+    fun `given enough transformers when start war then get the result`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+            val Bluestreak = Transformer.create("Bluestreak", 6, 6, 7, 9, 5, 2, 9, 7, Team.Autobots)
+            val Hubcap = Transformer.create("Hubcap", 4, 4, 4, 4, 4, 4, 4, 4, Team.Autobots)
+            val Soundwave =
+                Transformer.create("Soundwave", 8, 9, 2, 6, 7, 5, 6, 10, Team.Decepticons)
+            val transformers = listOf(Bluestreak, Hubcap, Soundwave)
+
+            coEvery { local.getAllSpark() } returns key
+            coEvery { local.hasAllSpark() } returns true
+            coEvery { local.getTransformers() } returns transformers
+
+            val repo = TransformerRepoImpl(remote, local)
+            repo.getOrCreateAllSpark()
+            val actual = repo.battleTransformers()
+
+            coVerifyOrder {
+                local.getAllSpark()
+                remote.setAllSpark(key)
+                local.getTransformers()
+            }
+            val expected = GameResult(
+                battle = 1,
+                result = BattleStatus.DECEPTICONS_WIN,
+                autobotsStatus = listOf(
+                    Bluestreak to FighterStatus.ELIMINATED,
+                    Hubcap to FighterStatus.SKIP
+                ),
+                deceptionsStatus = listOf(
+                    Soundwave to FighterStatus.VICTOR
+                )
+            )
+            Truth.assertThat(actual).isEqualTo(expected)
+            confirmVerified(local, remote)
+        }
+
+    @Test
+    fun `given not enough transformers when start war then get the exception`() =
+        runBlocking {
+            val remote: RemoteDataSource = get()
+            val local: LocalDataSource = get()
+            val key = "allspark"
+
+            coEvery { local.getAllSpark() } returns key
+            coEvery { local.hasAllSpark() } returns true
+            coEvery { local.getTransformers() } returns emptyList()
+
+            val repo = TransformerRepoImpl(remote, local)
+            repo.getOrCreateAllSpark()
+
+            try {
+                repo.battleTransformers()
+                fail()
+            } catch (e: Throwable) {
+                Truth.assertThat(e).isInstanceOf(InsufficientFighterException::class.java)
+            }
+
+            coVerifyOrder {
+                local.getAllSpark()
+                remote.setAllSpark(key)
+                local.getTransformers()
+            }
             confirmVerified(local, remote)
         }
 
