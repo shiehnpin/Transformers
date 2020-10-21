@@ -4,6 +4,9 @@ import androidx.room.*
 import com.enping.transformers.data.model.AllSpark
 import com.enping.transformers.data.model.Transformer
 
+/**
+ * Room database Dao
+ */
 @Dao
 interface TransformerDao{
 

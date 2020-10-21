@@ -10,16 +10,15 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.enping.transformers.R
-import com.enping.transformers.ui.util.EventObserver
-import com.enping.transformers.ui.MainViewModel
 import com.enping.transformers.ui.edit.TransformerEditFragment
 import com.enping.transformers.ui.showToast
+import com.enping.transformers.ui.util.EventObserver
 import kotlinx.android.synthetic.main.list_fragment.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class TransformersListFragment : Fragment() {
     private lateinit var adapter: TransformerAdapter
-    private val vm: MainViewModel by viewModel()
+    private val vm: TransformersViewModel by sharedViewModel()
 
     companion object {
         fun newInstance() = TransformersListFragment()
@@ -37,7 +36,7 @@ class TransformersListFragment : Fragment() {
         setupRecyclerView()
         setupErrorMessage()
         vm.isLoaded.observe(viewLifecycleOwner, Observer { isLoaded ->
-            enableActions(isLoaded)
+            if(isLoaded) enableActions(isLoaded)
         })
         vm.load()
     }
@@ -45,13 +44,17 @@ class TransformersListFragment : Fragment() {
     private fun setupErrorMessage() {
         vm.errorEvent.observe(viewLifecycleOwner,
             EventObserver {
-                it.showToast(requireContext())
+                if (it is MissingAllSparkException) {
+                    MissingAllSparkDialogFragment.show(parentFragmentManager)
+                } else {
+                    it.showToast(requireContext())
+                }
             })
     }
 
     private fun setupActions() {
         btn_fight_list_fragment.setOnClickListener {
-            TODO()
+            vm.startWar()
         }
         btn_create_list_fragment.setOnClickListener {
             navCreateTransformer()
@@ -73,6 +76,9 @@ class TransformersListFragment : Fragment() {
         }
         vm.transformers.observe(viewLifecycleOwner, Observer {
             adapter.update(it)
+        })
+        vm.warEvent.observe(viewLifecycleOwner, EventObserver {
+            GameResultDialogFragment.show(parentFragmentManager, it)
         })
         rv_transformers_list_fragment.adapter = adapter
         rv_transformers_list_fragment.addItemDecoration(

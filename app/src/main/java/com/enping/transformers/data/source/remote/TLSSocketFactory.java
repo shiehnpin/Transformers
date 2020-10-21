@@ -20,8 +20,8 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * Patch from https://medium.com/@krisnavneet/how-to-solve-sslhandshakeexception-in-android-ssl23-get-server-hello-tlsv1-alert-protocol-13b457c724ef
- * Aim to enable higher TLS version for Android 4.4
+ * This class is aim to enable TLSv1.2 for Android 4.4
+ * Ref: https://medium.com/@krisnavneet/how-to-solve-sslhandshakeexception-in-android-ssl23-get-server-hello-tlsv1-alert-protocol-13b457c724ef
  */
 public class TLSSocketFactory extends SSLSocketFactory {
 

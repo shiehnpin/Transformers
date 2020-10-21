@@ -6,9 +6,7 @@ import com.enping.transformers.data.source.remote.RemoteDataSource
 
 
 interface TransformerRepo {
-    /**
-     *  Call this to setup allspark
-     */
+
     suspend fun getOrCreateAllSpark(): String
 
     suspend fun getTransformers(): List<Transformer>
@@ -21,8 +19,17 @@ interface TransformerRepo {
 
     suspend fun deleteTransformer(transformerId: String)
 
-}
+    suspend fun battleTransformers(): GameResult
 
+}
+/**
+ * This class is the enter point for ViewModel to get/set transformers. It is a singleton and inject
+ * by Koin(DI utility)
+ *
+ * @property remote the remote data source to create/delete/edit transformers and AllSpark.
+ * @property local the local data source to persist transformers and AllSpark so that app can
+ * provide limited functions event the network is down.
+ */
 class TransformerRepoImpl(
     private val remote: RemoteDataSource,
     private val local: LocalDataSource
@@ -77,6 +84,10 @@ class TransformerRepoImpl(
 
         remote.deleteTransformer(transformerId)
         local.deleteTransformer(transformerId)
+    }
+
+    override suspend fun battleTransformers(): GameResult {
+        return Game(local.getTransformers()).battle()
     }
 
 }

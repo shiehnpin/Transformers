@@ -8,13 +8,17 @@ import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import okhttp3.OkHttpClient
-import org.koin.core.KoinComponent
-import org.koin.core.get
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
+/**
+ * CustomGlideAppModule
+ *
+ * This class is for patch the issues including support TLSv1.2 on Android 4.4 and avoid banned by
+ * image source site.
+ */
 @GlideModule
-class CustomGlideAppModule() : AppGlideModule(){
+class CustomGlideAppModule() : AppGlideModule() {
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
 
         val socketFactory = TLSSocketFactory()

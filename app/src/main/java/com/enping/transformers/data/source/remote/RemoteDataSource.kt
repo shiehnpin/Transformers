@@ -16,6 +16,11 @@ interface RemoteDataSource {
     fun clearAllSpark()
 }
 
+/**
+ * Local data source to persist user data
+ *
+ * @param baseUrl must provide instance to server, and can be replace with mock server url for test.
+ */
 class RemoteDataSourceImpl(baseUrl: HttpUrl) : RemoteDataSource {
 
     private var service: ApiService
