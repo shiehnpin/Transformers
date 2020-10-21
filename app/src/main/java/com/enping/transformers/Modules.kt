@@ -8,7 +8,7 @@ import com.enping.transformers.data.source.local.LocalDataSourceImpl
 import com.enping.transformers.data.source.local.TransformerDatabase
 import com.enping.transformers.data.source.remote.RemoteDataSource
 import com.enping.transformers.data.source.remote.RemoteDataSourceImpl
-import com.enping.transformers.ui.MainViewModel
+import com.enping.transformers.ui.list.TransformersViewModel
 import com.enping.transformers.ui.edit.TransformerEditViewModel
 import okhttp3.HttpUrl
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -30,6 +30,6 @@ val appModule = module {
 }
 
 val vmModule = module {
-    viewModel { MainViewModel(get()) }
+    viewModel { TransformersViewModel(get()) }
     viewModel { TransformerEditViewModel(get()) }
 }

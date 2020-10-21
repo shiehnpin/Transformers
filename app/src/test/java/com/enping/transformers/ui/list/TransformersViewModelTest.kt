@@ -1,8 +1,10 @@
-package com.enping.transformers.ui
+package com.enping.transformers.ui.list
 
 import com.enping.transformers.data.*
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
+import com.enping.transformers.ui.BaseViewModelTest
+import com.enping.transformers.ui.getOrAwaitValue
 import com.google.common.truth.Truth
 import io.mockk.coEvery
 import io.mockk.coVerifyOrder
@@ -12,12 +14,12 @@ import org.junit.Test
 import org.koin.test.get
 
 @ExperimentalCoroutinesApi
-internal class MainViewModelTest : BaseViewModelTest() {
+internal class TransformersViewModelTest : BaseViewModelTest() {
 
     @Test
     fun `given first time use when open app then load transformers`() {
         val repo: TransformerRepo = get()
-        val vm = MainViewModel(repo)
+        val vm = TransformersViewModel(repo)
         val expected = listOf(
             Transformer.create(name = "A")
         )
@@ -35,9 +37,25 @@ internal class MainViewModelTest : BaseViewModelTest() {
     }
 
     @Test
+    fun `given first time use when open app without network then got error`() {
+        val repo: TransformerRepo = get()
+        val vm = TransformersViewModel(repo)
+        coEvery { repo.getOrCreateAllSpark() } throws MissingAllSparkException()
+
+        vm.load()
+        coVerifyOrder {
+            repo.getOrCreateAllSpark()
+        }
+        confirmVerified(repo)
+        Truth.assertThat(vm.errorEvent.getOrAwaitValue().peekContent())
+            .isInstanceOf(MissingAllSparkException::class.java)
+        Truth.assertThat(vm.isLoaded.getOrAwaitValue()).isEqualTo(false)
+    }
+
+    @Test
     fun `given has transformers when delete the transform then reload transformers`() {
         val repo: TransformerRepo = get()
-        val vm = MainViewModel(repo)
+        val vm = TransformersViewModel(repo)
         val expected = listOf(
             Transformer.create(id = "A"),
             Transformer.create(id = "B")
@@ -69,7 +87,7 @@ internal class MainViewModelTest : BaseViewModelTest() {
     @Test
     fun `given has transformers when the transform start war then get battle result`() {
         val repo: TransformerRepo = get()
-        val vm = MainViewModel(repo)
+        val vm = TransformersViewModel(repo)
         val transformers = listOf(
             Transformer.create(id = "A", team = Team.Autobots),
             Transformer.create(id = "B", team = Team.Decepticons)
@@ -105,7 +123,7 @@ internal class MainViewModelTest : BaseViewModelTest() {
     @Test
     fun `given not enough transformers when start war then get error`() {
         val repo: TransformerRepo = get()
-        val vm = MainViewModel(repo)
+        val vm = TransformersViewModel(repo)
         val transformers = listOf(
             Transformer.create(id = "A", team = Team.Autobots)
         )

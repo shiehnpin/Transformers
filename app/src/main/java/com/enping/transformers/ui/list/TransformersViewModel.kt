@@ -1,4 +1,4 @@
-package com.enping.transformers.ui
+package com.enping.transformers.ui.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.enping.transformers.data.model.Transformer
 import com.enping.transformers.ui.util.Event
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repo: TransformerRepo) : ViewModel() {
+class TransformersViewModel(private val repo: TransformerRepo) : ViewModel() {
 
     private val _transformers = MutableLiveData<List<Transformer>>()
     val transformers: LiveData<List<Transformer>> = _transformers
@@ -26,9 +26,20 @@ class MainViewModel(private val repo: TransformerRepo) : ViewModel() {
 
     fun load() {
         viewModelScope.launch {
-            repo.getOrCreateAllSpark()
-            _transformers.value = repo.getTransformers()
-            _isLoaded.value = true
+            try {
+                repo.getOrCreateAllSpark()
+            } catch (e: Throwable) {
+                _errorEvent.value = Event(MissingAllSparkException())
+                _isLoaded.value = false
+                return@launch
+            }
+            try {
+                _transformers.value = repo.getTransformers()
+                _isLoaded.value = true
+            } catch (e: Throwable) {
+                _errorEvent.value = Event(e)
+                _isLoaded.value = false
+            }
         }
     }
 
@@ -54,3 +65,5 @@ class MainViewModel(private val repo: TransformerRepo) : ViewModel() {
         }
     }
 }
+
+class MissingAllSparkException: Exception()

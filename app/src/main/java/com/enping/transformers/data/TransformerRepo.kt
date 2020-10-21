@@ -6,9 +6,7 @@ import com.enping.transformers.data.source.remote.RemoteDataSource
 
 
 interface TransformerRepo {
-    /**
-     *  Call this to setup allspark
-     */
+
     suspend fun getOrCreateAllSpark(): String
 
     suspend fun getTransformers(): List<Transformer>
