@@ -1,5 +1,7 @@
 package com.enping.transformers.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
 
@@ -72,9 +74,10 @@ class Game(private val fightersList: List<Transformer>) {
 
 }
 
+@Parcelize
 data class GameResult(
     val battle: Int,
     val result: BattleStatus,
     val autobotsStatus: List<Pair<Transformer, FighterStatus>> = emptyList(),
     val deceptionsStatus: List<Pair<Transformer, FighterStatus>> = emptyList()
-)
+) : Parcelable
