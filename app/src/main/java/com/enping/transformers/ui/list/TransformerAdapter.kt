@@ -51,7 +51,7 @@ class TransformerAdapter : RecyclerView.Adapter<TransformerAdapter.TransformerVH
     }
 
     fun update(newTransformers: List<Transformer>){
-        val newList = newTransformers
+        val newList = newTransformers.sortedBy { it.id }
         val previousList = this.transformers
 
         val res = DiffUtil.calculateDiff(object :DiffUtil.Callback(){

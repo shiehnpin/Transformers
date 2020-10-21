@@ -1,6 +1,7 @@
 package com.enping.transformers.ui
 
-import com.enping.transformers.data.TransformerRepo
+import com.enping.transformers.data.*
+import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
 import com.google.common.truth.Truth
 import io.mockk.coEvery
@@ -53,6 +54,7 @@ internal class MainViewModelTest : BaseViewModelTest() {
             repo.getTransformers()
         }
         Truth.assertThat(vm.transformers.getOrAwaitValue()).isEqualTo(expected)
+        Truth.assertThat(vm.isLoaded.getOrAwaitValue()).isEqualTo(true)
 
         vm.delete("A")
         coVerifyOrder {
@@ -60,8 +62,70 @@ internal class MainViewModelTest : BaseViewModelTest() {
             repo.getTransformers()
         }
         Truth.assertThat(vm.transformers.getOrAwaitValue()).isEqualTo(expectedAfterRemoved)
-        Truth.assertThat(vm.isLoaded.getOrAwaitValue()).isEqualTo(true)
 
+        confirmVerified(repo)
+    }
+
+    @Test
+    fun `given has transformers when the transform start war then get battle result`() {
+        val repo: TransformerRepo = get()
+        val vm = MainViewModel(repo)
+        val transformers = listOf(
+            Transformer.create(id = "A", team = Team.Autobots),
+            Transformer.create(id = "B", team = Team.Decepticons)
+        )
+        val gameResult = GameResult(
+            1, BattleStatus.TIE,
+            listOf(
+                Transformer.create(id = "A", team = Team.Autobots) to FighterStatus.DESTROYED
+            ),
+            listOf(
+                Transformer.create(id = "B", team = Team.Decepticons) to FighterStatus.DESTROYED
+            )
+        )
+        coEvery { repo.getTransformers() } returns transformers
+        coEvery { repo.battleTransformers() } returns gameResult
+
+        vm.load()
+        coVerifyOrder {
+            repo.getOrCreateAllSpark()
+            repo.getTransformers()
+        }
+
+        vm.startWar()
+        coVerifyOrder {
+            repo.getTransformers()
+            repo.battleTransformers()
+        }
+
+        Truth.assertThat(vm.warEvent.getOrAwaitValue().peekContent()).isEqualTo(gameResult)
+        confirmVerified(repo)
+    }
+
+    @Test
+    fun `given not enough transformers when start war then get error`() {
+        val repo: TransformerRepo = get()
+        val vm = MainViewModel(repo)
+        val transformers = listOf(
+            Transformer.create(id = "A", team = Team.Autobots)
+        )
+        coEvery { repo.getTransformers() } returns transformers
+        coEvery { repo.battleTransformers() } throws InsufficientFighterException()
+
+        vm.load()
+        coVerifyOrder {
+            repo.getOrCreateAllSpark()
+            repo.getTransformers()
+        }
+
+        vm.startWar()
+        coVerifyOrder {
+            repo.getTransformers()
+            repo.battleTransformers()
+        }
+
+        Truth.assertThat(vm.errorEvent.getOrAwaitValue().peekContent())
+            .isInstanceOf(InsufficientFighterException::class.java)
         confirmVerified(repo)
     }
 }

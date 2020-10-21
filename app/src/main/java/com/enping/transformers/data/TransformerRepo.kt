@@ -21,6 +21,8 @@ interface TransformerRepo {
 
     suspend fun deleteTransformer(transformerId: String)
 
+    suspend fun battleTransformers(): GameResult
+
 }
 
 class TransformerRepoImpl(
@@ -77,6 +79,10 @@ class TransformerRepoImpl(
 
         remote.deleteTransformer(transformerId)
         local.deleteTransformer(transformerId)
+    }
+
+    override suspend fun battleTransformers(): GameResult {
+        return Game(local.getTransformers()).battle()
     }
 
 }
