@@ -3,6 +3,7 @@ package com.enping.transformers.ui.list
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.enping.transformers.data.BattleStatus
@@ -10,15 +11,29 @@ import com.enping.transformers.data.FighterStatus
 import com.enping.transformers.data.GameResult
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
+import kotlinx.android.parcel.Parcelize
 
 class GameResultDialogFragment : DialogFragment() {
+
+    @Parcelize
+    data class ParcelGameResult(
+        val battle: Int,
+        val result: BattleStatus,
+        val autobotsStatus: List<Pair<Transformer, FighterStatus>> = emptyList(),
+        val decepticonsStatus: List<Pair<Transformer, FighterStatus>> = emptyList()
+    ): Parcelable
 
     companion object {
         const val RESULT = "result"
         fun show(fragmentManager: FragmentManager, gameResult: GameResult) {
             val dialogFragment = GameResultDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(RESULT, gameResult)
+                    putParcelable(RESULT, ParcelGameResult(
+                        gameResult.battle,
+                        gameResult.result,
+                        gameResult.autobotsStatus,
+                        gameResult.decepticonsStatus
+                    ))
                 }
             }
             dialogFragment.show(fragmentManager, "war_result")
@@ -26,17 +41,16 @@ class GameResultDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val gameResult = requireArguments().getParcelable<GameResult>(RESULT)!!
+        val gameResult = requireArguments().getParcelable<ParcelGameResult>(RESULT)!!
 
         return AlertDialog.Builder(requireContext())
             .setTitle("War Result")
             .setMessage(createReadableGameResult(gameResult))
             .setPositiveButton("OK") { _, _ -> }
             .create()
-
     }
 
-    private fun createReadableGameResult(gameResult: GameResult): String {
+    private fun createReadableGameResult(gameResult: ParcelGameResult): String {
         val battlesMessage = "${gameResult.battle} battle(s)"
         val detailMessage = when (gameResult.result) {
             BattleStatus.AUTOBOTS_WIN,

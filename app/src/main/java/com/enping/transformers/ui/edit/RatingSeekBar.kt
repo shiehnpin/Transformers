@@ -9,7 +9,6 @@ import android.widget.TextView
 import com.enping.transformers.R
 import kotlinx.android.synthetic.main.layout_rating_seekbar.view.*
 
-//TODO, implement custom view onSaveState/onRestoreState
 class RatingSeekBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
