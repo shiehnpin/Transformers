@@ -26,7 +26,7 @@ internal class GameTest {
             battle = 1,
             result = BattleStatus.AUTOBOTS_WIN,
             autobotsStatus = listOf(autobot to FighterStatus.VICTOR),
-            deceptionsStatus = listOf(deception to FighterStatus.ELIMINATED)
+            decepticonsStatus = listOf(deception to FighterStatus.ELIMINATED)
         )
         val actual = Game(listOf(autobot, deception)).battle()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -40,7 +40,7 @@ internal class GameTest {
             battle = 1,
             result = BattleStatus.DECEPTICONS_WIN,
             autobotsStatus = listOf(autobot to FighterStatus.ELIMINATED),
-            deceptionsStatus = listOf(deception to FighterStatus.VICTOR)
+            decepticonsStatus = listOf(deception to FighterStatus.VICTOR)
         )
         val actual = Game(listOf(autobot, deception)).battle()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -54,7 +54,7 @@ internal class GameTest {
             battle = 1,
             result = BattleStatus.TIE,
             autobotsStatus = listOf(autobot to FighterStatus.DESTROYED),
-            deceptionsStatus = listOf(deception to FighterStatus.DESTROYED)
+            decepticonsStatus = listOf(deception to FighterStatus.DESTROYED)
         )
         val actual = Game(listOf(autobot, deception)).battle()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -63,7 +63,7 @@ internal class GameTest {
     @Test
     fun `given 1 autobot and 3 deception when autobot is stronger then opponent then autobot wins`() {
         val autobot = Transformer.create(name = "winner", team = Team.Autobots, strength = 3)
-        val deceptions = listOf(
+        val deceptcions = listOf(
             Transformer.create(name = "1", team = Team.Decepticons),
             Transformer.create(name = "2", team = Team.Decepticons),
             Transformer.create(name = "3", team = Team.Decepticons)
@@ -72,13 +72,13 @@ internal class GameTest {
             battle = 1,
             result = BattleStatus.AUTOBOTS_WIN,
             autobotsStatus = listOf(autobot to FighterStatus.VICTOR),
-            deceptionsStatus = listOf(
+            decepticonsStatus = listOf(
                 Transformer.create(name = "1", team = Team.Decepticons) to FighterStatus.ELIMINATED,
                 Transformer.create(name = "2", team = Team.Decepticons) to FighterStatus.SKIP,
                 Transformer.create(name = "3", team = Team.Decepticons) to FighterStatus.SKIP
             )
         )
-        val actual = Game(deceptions + autobot).battle()
+        val actual = Game(deceptcions + autobot).battle()
         Truth.assertThat(actual).isEqualTo(expected)
     }
 
@@ -98,7 +98,7 @@ internal class GameTest {
                 Transformer.create(name = "2", team = Team.Autobots) to FighterStatus.SKIP,
                 Transformer.create(name = "3", team = Team.Autobots) to FighterStatus.SKIP
             ),
-            deceptionsStatus = listOf(
+            decepticonsStatus = listOf(
                 deception to FighterStatus.VICTOR
             )
         )
@@ -107,12 +107,12 @@ internal class GameTest {
     }
 
     @Test
-    fun `given 2 ranked autobots and 2 ranked deceptions when they neck-neck then it is tie`() {
+    fun `given 2 ranked autobots and 2 ranked deceptcions when they neck-neck then it is tie`() {
         val autobots = listOf(
             Transformer.create(name = "1", team = Team.Autobots, rank = 2, firepower = 3),
             Transformer.create(name = "2", team = Team.Autobots, rank = 1)
         )
-        val deceptions = listOf(
+        val deceptcions = listOf(
             Transformer.create(name = "A", team = Team.Decepticons, rank = 1, intelligence = 3),
             Transformer.create(name = "B", team = Team.Decepticons, rank = 2)
         )
@@ -132,7 +132,7 @@ internal class GameTest {
                     rank = 1
                 ) to FighterStatus.ELIMINATED
             ),
-            deceptionsStatus = listOf(
+            decepticonsStatus = listOf(
                 Transformer.create(
                     name = "B",
                     team = Team.Decepticons,
@@ -146,12 +146,12 @@ internal class GameTest {
                 ) to FighterStatus.VICTOR
             )
         )
-        val actual = Game(autobots + deceptions).battle()
+        val actual = Game(autobots + deceptcions).battle()
         Truth.assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `given 5 ranked autobots and 1 deceptions when input reversed rank then sorted it by rank(DESC) then id(alphabet)`() {
+    fun `given 5 ranked autobots and 1 deceptcions when input reversed rank then sorted it by rank(DESC) then id(alphabet)`() {
         val autobots = listOf(
             Transformer.create(id = "a", team = Team.Autobots, rank = 4),
             Transformer.create(id = "b", team = Team.Autobots, rank = 4),
@@ -174,14 +174,14 @@ internal class GameTest {
                 Transformer.create(id = "d", team = Team.Autobots, rank = 2) to FighterStatus.SKIP,
                 Transformer.create(id = "e", team = Team.Autobots, rank = 1) to FighterStatus.SKIP
             ),
-            deceptionsStatus = listOf(deception to FighterStatus.DESTROYED)
+            decepticonsStatus = listOf(deception to FighterStatus.DESTROYED)
         )
         val actual = Game(autobots.reversed() + deception).battle()
         Truth.assertThat(actual).isEqualTo(expected)
     }
 
     @Test
-    fun `given autobots and deceptions when OptimusPrime fight to Predaking then all destroyed`() {
+    fun `given autobots and deceptcions when OptimusPrime fight to Predaking then all destroyed`() {
         val autobots = listOf(
             Transformer.create(team = Team.Autobots, rank = 4),
             Transformer.create(team = Team.Autobots, rank = 3),
@@ -207,7 +207,7 @@ internal class GameTest {
                     name = Transformer.OptimusPrime
                 ) to FighterStatus.DESTROYED
             ),
-            deceptionsStatus = listOf(
+            decepticonsStatus = listOf(
                 Transformer.create(team = Team.Decepticons, rank = 4) to FighterStatus.DESTROYED,
                 Transformer.create(team = Team.Decepticons, rank = 3) to FighterStatus.DESTROYED,
                 Transformer.create(team = Team.Decepticons, rank = 2) to FighterStatus.DESTROYED,
@@ -218,7 +218,7 @@ internal class GameTest {
                 ) to FighterStatus.DESTROYED
             )
         )
-        val actual = Game(autobots + deceptions).battle()
+        val actual = Game(autobots + decepticons).battle()
         Truth.assertThat(actual).isEqualTo(expected)
     }
 
@@ -239,7 +239,7 @@ internal class GameTest {
                 Bluestreak to FighterStatus.ELIMINATED,
                 Hubcap to FighterStatus.SKIP
             ),
-            deceptionsStatus = listOf(
+            decepticonsStatus = listOf(
                 Soundwave to FighterStatus.VICTOR
             )
         )

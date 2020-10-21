@@ -35,9 +35,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.AUTOBOTS_WIN,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.VICTOR,
-            deceptionsFighterStatus = FighterStatus.ELIMINATED
+            decepticonsFighterStatus = FighterStatus.ELIMINATED
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -60,9 +60,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.DECEPTICONS_WIN,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.ELIMINATED,
-            deceptionsFighterStatus = FighterStatus.VICTOR
+            decepticonsFighterStatus = FighterStatus.VICTOR
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -83,9 +83,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.AUTOBOTS_WIN,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.VICTOR,
-            deceptionsFighterStatus = FighterStatus.ELIMINATED
+            decepticonsFighterStatus = FighterStatus.ELIMINATED
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -106,9 +106,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.DECEPTICONS_WIN,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.ELIMINATED,
-            deceptionsFighterStatus = FighterStatus.VICTOR
+            decepticonsFighterStatus = FighterStatus.VICTOR
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -152,9 +152,9 @@ internal class FightTest {
             val expected = FightResult(
                 status = BattleStatus.AUTOBOTS_WIN,
                 autobotsFighter = winner,
-                deceptionsFighter = loser,
+                deceptcionsFighter = loser,
                 autobotsFighterStatus = FighterStatus.VICTOR,
-                deceptionsFighterStatus = FighterStatus.ELIMINATED
+                decepticonsFighterStatus = FighterStatus.ELIMINATED
             )
             val actual = Fight(winner, loser).fight()
             Truth.assertThat(actual).isEqualTo(expected)
@@ -199,9 +199,9 @@ internal class FightTest {
             val expected = FightResult(
                 status = BattleStatus.DECEPTICONS_WIN,
                 autobotsFighter = loser,
-                deceptionsFighter = winner,
+                deceptcionsFighter = winner,
                 autobotsFighterStatus = FighterStatus.ELIMINATED,
-                deceptionsFighterStatus = FighterStatus.VICTOR
+                decepticonsFighterStatus = FighterStatus.VICTOR
             )
             val actual = Fight(loser,winner).fight()
             Truth.assertThat(actual).isEqualTo(expected)
@@ -221,9 +221,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.TIE,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.DESTROYED,
-            deceptionsFighterStatus = FighterStatus.DESTROYED
+            decepticonsFighterStatus = FighterStatus.DESTROYED
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -241,9 +241,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.AUTOBOTS_WIN,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.VICTOR,
-            deceptionsFighterStatus = FighterStatus.ELIMINATED
+            decepticonsFighterStatus = FighterStatus.ELIMINATED
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -261,9 +261,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.AUTOBOTS_WIN,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.VICTOR,
-            deceptionsFighterStatus = FighterStatus.ELIMINATED
+            decepticonsFighterStatus = FighterStatus.ELIMINATED
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -281,9 +281,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.DECEPTICONS_WIN,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.ELIMINATED,
-            deceptionsFighterStatus = FighterStatus.VICTOR
+            decepticonsFighterStatus = FighterStatus.VICTOR
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)
@@ -301,9 +301,9 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.DECEPTICONS_WIN,
             autobotsFighter = fighterA,
-            deceptionsFighter = fighterB,
+            deceptcionsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.ELIMINATED,
-            deceptionsFighterStatus = FighterStatus.VICTOR
+            decepticonsFighterStatus = FighterStatus.VICTOR
         )
         val actual = Fight(fighterA, fighterB).fight()
         Truth.assertThat(actual).isEqualTo(expected)

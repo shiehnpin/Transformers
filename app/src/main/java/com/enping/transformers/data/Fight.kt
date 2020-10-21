@@ -6,38 +6,38 @@ import com.enping.transformers.data.model.Transformer
 
 class Fight(
     val autobots: Transformer,
-    val deceptions: Transformer
+    val decepticons: Transformer
 ) {
     private val specialNameList = listOf(Transformer.OptimusPrime, Transformer.Predaking)
 
     @Throws(BigBangException::class)
     fun fight(): FightResult {
         check(autobots.enumTeam == Team.Autobots)
-        check(deceptions.enumTeam == Team.Decepticons)
-        if (autobots.name in specialNameList && deceptions.name in specialNameList) {
+        check(decepticons.enumTeam == Team.Decepticons)
+        if (autobots.name in specialNameList && decepticons.name in specialNameList) {
             throw BigBangException()
         }
         val winner =
             if (autobots.name in specialNameList) {
                 autobots
-            } else if (deceptions.name in specialNameList) {
-                deceptions
-            } else if (autobots.courage - deceptions.courage >= 4 &&
-                autobots.strength - deceptions.strength >= 3
+            } else if (decepticons.name in specialNameList) {
+                decepticons
+            } else if (autobots.courage - decepticons.courage >= 4 &&
+                autobots.strength - decepticons.strength >= 3
             ) {
                 autobots
-            } else if (deceptions.courage - autobots.courage >= 4 &&
-                deceptions.strength - autobots.strength >= 3
+            } else if (decepticons.courage - autobots.courage >= 4 &&
+                decepticons.strength - autobots.strength >= 3
             ) {
-                deceptions
-            } else if (autobots.skill - deceptions.skill >= 3) {
+                decepticons
+            } else if (autobots.skill - decepticons.skill >= 3) {
                 autobots
-            } else if (deceptions.skill - autobots.skill >= 3) {
-                deceptions
-            } else if (autobots.overAllRating > deceptions.overAllRating) {
+            } else if (decepticons.skill - autobots.skill >= 3) {
+                decepticons
+            } else if (autobots.overAllRating > decepticons.overAllRating) {
                 autobots
-            } else if (deceptions.overAllRating > autobots.overAllRating) {
-                deceptions
+            } else if (decepticons.overAllRating > autobots.overAllRating) {
+                decepticons
             } else {
                 return FightResult.from(
                     this,
@@ -79,22 +79,22 @@ data class FightResult(
     val status: BattleStatus,
     val autobotsFighter: Transformer,
     val autobotsFighterStatus: FighterStatus,
-    val deceptionsFighter: Transformer,
-    val deceptionsFighterStatus: FighterStatus
+    val deceptcionsFighter: Transformer,
+    val decepticonsFighterStatus: FighterStatus
 ) {
     companion object {
         fun from(
             fight: Fight,
             status: BattleStatus,
             autobotsFighterStatus: FighterStatus,
-            deceptionsFighterStatus: FighterStatus
+            deceptcionsFighterStatus: FighterStatus
         ): FightResult {
             return FightResult(
                 status = status,
                 autobotsFighter = fight.autobots,
-                deceptionsFighter = fight.deceptions,
+                deceptcionsFighter = fight.decepticons,
                 autobotsFighterStatus = autobotsFighterStatus,
-                deceptionsFighterStatus = deceptionsFighterStatus
+                decepticonsFighterStatus = deceptcionsFighterStatus
             )
         }
     }

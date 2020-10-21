@@ -10,7 +10,6 @@ import com.enping.transformers.data.FighterStatus
 import com.enping.transformers.data.GameResult
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class GameResultDialogFragment : DialogFragment() {
 
@@ -46,18 +45,18 @@ class GameResultDialogFragment : DialogFragment() {
                     if (gameResult.result == BattleStatus.AUTOBOTS_WIN) {
                         Team.Autobots to gameResult.autobotsStatus
                     } else {
-                        Team.Decepticons to gameResult.deceptionsStatus
+                        Team.Decepticons to gameResult.decepticonsStatus
                     }
                 val (loser, loserTeam) =
                     if (gameResult.result == BattleStatus.AUTOBOTS_WIN) {
-                        Team.Decepticons to gameResult.deceptionsStatus
+                        Team.Decepticons to gameResult.decepticonsStatus
                     } else {
                         Team.Autobots to gameResult.autobotsStatus
                     }
                 createWinnerLoserReadableMessage(winner, winnerTeam, loser, loserTeam)
             }
             else -> {
-                createTieReadableMessage(gameResult.autobotsStatus, gameResult.deceptionsStatus)
+                createTieReadableMessage(gameResult.autobotsStatus, gameResult.decepticonsStatus)
             }
         }
         return message

@@ -298,7 +298,7 @@ internal class TransformerRepoImplTest : KoinTest {
                     Bluestreak to FighterStatus.ELIMINATED,
                     Hubcap to FighterStatus.SKIP
                 ),
-                deceptionsStatus = listOf(
+                decepticonsStatus = listOf(
                     Soundwave to FighterStatus.VICTOR
                 )
             )
