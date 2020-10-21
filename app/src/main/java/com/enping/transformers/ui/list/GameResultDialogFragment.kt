@@ -37,8 +37,8 @@ class GameResultDialogFragment : DialogFragment() {
     }
 
     private fun createReadableGameResult(gameResult: GameResult): String {
-        val battles = "${gameResult.battle} battle(s)"
-        val message = when (gameResult.result) {
+        val battlesMessage = "${gameResult.battle} battle(s)"
+        val detailMessage = when (gameResult.result) {
             BattleStatus.AUTOBOTS_WIN,
             BattleStatus.DECEPTICONS_WIN -> {
                 val (winner, winnerTeam) =
@@ -59,7 +59,7 @@ class GameResultDialogFragment : DialogFragment() {
                 createTieReadableMessage(gameResult.autobotsStatus, gameResult.decepticonsStatus)
             }
         }
-        return message
+        return listOf(battlesMessage, detailMessage).joinToString("\n")
     }
 
     private fun createTieReadableMessage(
