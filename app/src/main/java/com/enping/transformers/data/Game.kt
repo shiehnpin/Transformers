@@ -6,7 +6,7 @@ import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
 
 class InsufficientFighterException :
-    Exception("At least need one Autobot and one Deception to fight.")
+    Exception("At least need one Autobot and one Decepticon to fight.")
 
 class Game(private val fightersList: List<Transformer>) {
     fun battle(): GameResult {
@@ -21,9 +21,9 @@ class Game(private val fightersList: List<Transformer>) {
         }
         val count = Math.max(autobots.size, decepticons.size)
         val autobotsStatus = mutableListOf<Pair<Transformer, FighterStatus>>()
-        val deceptcionsStatus = mutableListOf<Pair<Transformer, FighterStatus>>()
+        val decepticonsStatus = mutableListOf<Pair<Transformer, FighterStatus>>()
         var autobotsWinTime = 0
-        var deceptcionWinTime = 0
+        var decepticonsWinTime = 0
         var battleCount = 0
 
         try {
@@ -34,11 +34,11 @@ class Game(private val fightersList: List<Transformer>) {
                     battleCount++
                     val result = Fight(a, d).fight()
                     autobotsStatus.add(result.autobotsFighter to result.autobotsFighterStatus)
-                    deceptcionsStatus.add(result.deceptcionsFighter to result.decepticonsFighterStatus)
+                    decepticonsStatus.add(result.decepticonsFighter to result.decepticonsFighterStatus)
                     if (result.status == BattleStatus.AUTOBOTS_WIN) autobotsWinTime++
-                    if (result.status == BattleStatus.DECEPTICONS_WIN) deceptcionWinTime++
+                    if (result.status == BattleStatus.DECEPTICONS_WIN) decepticonsWinTime++
                 } else if (d != null) {
-                    deceptcionsStatus.add(d to FighterStatus.SKIP)
+                    decepticonsStatus.add(d to FighterStatus.SKIP)
                 } else if (a != null) {
                     autobotsStatus.add(a to FighterStatus.SKIP)
                 } else {
@@ -54,10 +54,10 @@ class Game(private val fightersList: List<Transformer>) {
             )
         }
         val result = when {
-            autobotsWinTime == deceptcionWinTime -> {
+            autobotsWinTime == decepticonsWinTime -> {
                 BattleStatus.TIE
             }
-            autobotsWinTime > deceptcionWinTime -> {
+            autobotsWinTime > decepticonsWinTime -> {
                 BattleStatus.AUTOBOTS_WIN
             }
             else -> {
@@ -68,7 +68,7 @@ class Game(private val fightersList: List<Transformer>) {
             battle = battleCount,
             result = result,
             autobotsStatus = autobotsStatus,
-            decepticonsStatus = deceptcionsStatus
+            decepticonsStatus = decepticonsStatus
         )
     }
 

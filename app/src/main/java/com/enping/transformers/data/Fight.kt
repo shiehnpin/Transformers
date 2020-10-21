@@ -79,7 +79,7 @@ data class FightResult(
     val status: BattleStatus,
     val autobotsFighter: Transformer,
     val autobotsFighterStatus: FighterStatus,
-    val deceptcionsFighter: Transformer,
+    val decepticonsFighter: Transformer,
     val decepticonsFighterStatus: FighterStatus
 ) {
     companion object {
@@ -87,14 +87,14 @@ data class FightResult(
             fight: Fight,
             status: BattleStatus,
             autobotsFighterStatus: FighterStatus,
-            deceptcionsFighterStatus: FighterStatus
+            decepticonsFighterStatus: FighterStatus
         ): FightResult {
             return FightResult(
                 status = status,
                 autobotsFighter = fight.autobots,
-                deceptcionsFighter = fight.decepticons,
+                decepticonsFighter = fight.decepticons,
                 autobotsFighterStatus = autobotsFighterStatus,
-                decepticonsFighterStatus = deceptcionsFighterStatus
+                decepticonsFighterStatus = decepticonsFighterStatus
             )
         }
     }

@@ -35,7 +35,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.AUTOBOTS_WIN,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.VICTOR,
             decepticonsFighterStatus = FighterStatus.ELIMINATED
         )
@@ -44,7 +44,7 @@ internal class FightTest {
     }
 
     @Test
-    fun `given 2 fighter when deception courage is up 4 and strength is up 3 than opponent then it wins`() {
+    fun `given 2 fighter when decepticon courage is up 4 and strength is up 3 than opponent then it wins`() {
         val fighterA = Transformer.create(
             name = "A",
             courage = 3,
@@ -60,7 +60,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.DECEPTICONS_WIN,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.ELIMINATED,
             decepticonsFighterStatus = FighterStatus.VICTOR
         )
@@ -83,7 +83,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.AUTOBOTS_WIN,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.VICTOR,
             decepticonsFighterStatus = FighterStatus.ELIMINATED
         )
@@ -92,7 +92,7 @@ internal class FightTest {
     }
 
     @Test
-    fun `given 2 fighter when deception skills is up 3 than opponent then it wins`() {
+    fun `given 2 fighter when decepticon skills is up 3 than opponent then it wins`() {
         val fighterA = Transformer.create(
             name = "A",
             skill = 5,
@@ -106,7 +106,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.DECEPTICONS_WIN,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.ELIMINATED,
             decepticonsFighterStatus = FighterStatus.VICTOR
         )
@@ -152,7 +152,7 @@ internal class FightTest {
             val expected = FightResult(
                 status = BattleStatus.AUTOBOTS_WIN,
                 autobotsFighter = winner,
-                deceptcionsFighter = loser,
+                decepticonsFighter = loser,
                 autobotsFighterStatus = FighterStatus.VICTOR,
                 decepticonsFighterStatus = FighterStatus.ELIMINATED
             )
@@ -162,7 +162,7 @@ internal class FightTest {
     }
 
     @Test
-    fun `given 2 fighter when deception overall rating is greater than opponent then it wins`() {
+    fun `given 2 fighter when decepticon overall rating is greater than opponent then it wins`() {
         val winners = listOf(
             Transformer.create(
                 name = "B",
@@ -199,7 +199,7 @@ internal class FightTest {
             val expected = FightResult(
                 status = BattleStatus.DECEPTICONS_WIN,
                 autobotsFighter = loser,
-                deceptcionsFighter = winner,
+                decepticonsFighter = winner,
                 autobotsFighterStatus = FighterStatus.ELIMINATED,
                 decepticonsFighterStatus = FighterStatus.VICTOR
             )
@@ -221,7 +221,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.TIE,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.DESTROYED,
             decepticonsFighterStatus = FighterStatus.DESTROYED
         )
@@ -241,7 +241,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.AUTOBOTS_WIN,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.VICTOR,
             decepticonsFighterStatus = FighterStatus.ELIMINATED
         )
@@ -261,7 +261,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.AUTOBOTS_WIN,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.VICTOR,
             decepticonsFighterStatus = FighterStatus.ELIMINATED
         )
@@ -270,7 +270,7 @@ internal class FightTest {
     }
 
     @Test
-    fun `given 2 fighter when deception is called Optimus Prime then it sudden win`(){
+    fun `given 2 fighter when decepticon is called Optimus Prime then it sudden win`(){
         val fighterA = Transformer.create(
             team = Team.Autobots
         )
@@ -281,7 +281,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.DECEPTICONS_WIN,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.ELIMINATED,
             decepticonsFighterStatus = FighterStatus.VICTOR
         )
@@ -290,7 +290,7 @@ internal class FightTest {
     }
 
     @Test
-    fun `given 2 fighter when deception is called Predaking then it sudden win`(){
+    fun `given 2 fighter when decepticon is called Predaking then it sudden win`(){
         val fighterA = Transformer.create(
             team = Team.Autobots
         )
@@ -301,7 +301,7 @@ internal class FightTest {
         val expected = FightResult(
             status = BattleStatus.DECEPTICONS_WIN,
             autobotsFighter = fighterA,
-            deceptcionsFighter = fighterB,
+            decepticonsFighter = fighterB,
             autobotsFighterStatus = FighterStatus.ELIMINATED,
             decepticonsFighterStatus = FighterStatus.VICTOR
         )
