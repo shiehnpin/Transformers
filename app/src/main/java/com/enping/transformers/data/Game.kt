@@ -3,9 +3,9 @@ package com.enping.transformers.data
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
 
-class InsufficientFighterException :
-    Exception("At least need one Autobot and one Decepticon to fight.")
-
+/**
+ * The class to calculate the game result of a bunch of autobots and decepticons.
+ */
 class Game(private val fightersList: List<Transformer>) {
     fun battle(): GameResult {
         val autobots = fightersList
@@ -71,10 +71,21 @@ class Game(private val fightersList: List<Transformer>) {
     }
 
 }
-
+/**
+ * The the game result of a bunch of autobots and decepticons.
+ *
+ * Result including the winner of the game and the round of the battle. It also provide all fighters
+ * status after the war, whether is DESTROYED, ELIMINATED, VICTOR, or SKIP.
+ */
 data class GameResult(
     val battle: Int,
     val result: BattleStatus,
     val autobotsStatus: List<Pair<Transformer, FighterStatus>> = emptyList(),
     val decepticonsStatus: List<Pair<Transformer, FighterStatus>> = emptyList()
 )
+
+/**
+ * The exception when no enough transformers to fight.
+ */
+class InsufficientFighterException :
+    Exception("At least need one Autobot and one Decepticon to fight.")

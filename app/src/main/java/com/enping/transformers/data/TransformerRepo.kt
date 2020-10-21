@@ -22,7 +22,14 @@ interface TransformerRepo {
     suspend fun battleTransformers(): GameResult
 
 }
-
+/**
+ * This class is the enter point for ViewModel to get/set transformers. It is a singleton and inject
+ * by Koin(DI utility)
+ *
+ * @property remote the remote data source to create/delete/edit transformers and AllSpark.
+ * @property local the local data source to persist transformers and AllSpark so that app can
+ * provide limited functions event the network is down.
+ */
 class TransformerRepoImpl(
     private val remote: RemoteDataSource,
     private val local: LocalDataSource

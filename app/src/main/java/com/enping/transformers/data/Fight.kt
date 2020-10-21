@@ -3,7 +3,9 @@ package com.enping.transformers.data
 import com.enping.transformers.data.model.Team
 import com.enping.transformers.data.model.Transformer
 
-
+/**
+ * The class to calculate fight result of two transformers.
+ */
 class Fight(
     val autobots: Transformer,
     val decepticons: Transformer
@@ -65,16 +67,28 @@ class Fight(
     }
 }
 
+/**
+ * The exception when two transformers with special name fighting together.
+ */
 class BigBangException : Exception()
 
+/**
+ * The enum of the fight event result.
+ */
 enum class BattleStatus {
     AUTOBOTS_WIN, DECEPTICONS_WIN, TIE
 }
 
+/**
+ * The enum of the fighter status.
+ */
 enum class FighterStatus {
     DESTROYED, VICTOR, ELIMINATED, SKIP
 }
 
+/**
+ * The data class to the fight result of two transformers.
+ */
 data class FightResult(
     val status: BattleStatus,
     val autobotsFighter: Transformer,

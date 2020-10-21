@@ -5,10 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-enum class Team(val key: String) {
-    Autobots("A"), Decepticons("D")
-}
-
+/**
+ * Transformer data class.
+ *
+ * Avoid using the constructor directly. Use Transformer.create() instead.
+ */
 @Entity(tableName = "transformer")
 data class Transformer(
 
@@ -118,4 +119,11 @@ data class Transformer(
             )
         }
     }
+}
+
+/**
+ * This enum for two teams.
+ */
+enum class Team(val key: String) {
+    Autobots("A"), Decepticons("D")
 }

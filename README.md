@@ -22,7 +22,7 @@ I have made some assumptions in different parts to help myself defined the bound
 4. In the special rules, if the Optimus Prime or Predaking face each other (or a duplicate of each other), the game immediately ends with all competitors destroyed. The competitors here include all previous competitors(victor, ran away). And the result of the game is tied under this circumstance.
 
 ## Architecture
-There are several modules in this app (Repository + MVVM patterns). ![Flow](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png)
+There are several modules in this app (Repository + MVVM patterns). The architecture chart is as below.![Flow](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png)
 
 1. Fragment/Activity
 	All Fragments and Activities are just helping a user to view the transformers or to provide actions such as create, edit, delete and fight.

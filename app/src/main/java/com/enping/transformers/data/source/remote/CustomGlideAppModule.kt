@@ -11,6 +11,12 @@ import okhttp3.OkHttpClient
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
+/**
+ * CustomGlideAppModule
+ *
+ * This class is for patch the issues including support TLSv1.2 on Android 4.4 and avoid banned by
+ * image source site.
+ */
 @GlideModule
 class CustomGlideAppModule() : AppGlideModule() {
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {

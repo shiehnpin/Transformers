@@ -15,7 +15,11 @@ interface LocalDataSource {
     suspend fun getTransformer(transformerId: String): Transformer
 }
 
-
+/**
+ * Local data source to persist user data
+ *
+ * @param db must provide instance to store the data, and can be replace with in-memory db for test.
+ */
 class LocalDataSourceImpl(private val db: TransformerDatabase) : LocalDataSource {
 
     override suspend fun getAllSpark(): String? {
